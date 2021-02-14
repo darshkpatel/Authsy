@@ -9,6 +9,9 @@ const envVarsSchema = Joi.object()
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
     PORT: Joi.number().default(3000),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
+    GOOGLE_CLIENT_ID: Joi.string().required().description('Google client id'),
+    GOOGLE_CLIENT_SECRET: Joi.string().required().description('Google client secret'),
+    CALLBACK_URL: Joi.string().uri().required().description('Google cb url'),
     JWT_SECRET: Joi.string().required().description('JWT secret key'),
     JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which access tokens expire'),
     JWT_REFRESH_EXPIRATION_DAYS: Joi.number().default(30).description('days after which refresh tokens expire'),
@@ -36,6 +39,11 @@ module.exports = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     },
+  },
+  auth: {
+    googleId: envVars.GOOGLE_CLIENT_ID,
+    googleSecret: envVars.GOOGLE_CLIENT_SECRET,
+    callbackURL: envVars.CALLBACK_URL,
   },
   jwt: {
     secret: envVars.JWT_SECRET,
