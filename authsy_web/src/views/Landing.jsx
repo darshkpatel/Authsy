@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom'
 import Navbar from "../components/Navbar.js";
 import Footer from "../components/Footer.js";
 
-import register_bg_2 from '../assets/img/register_bg_2.png';
-
 export default function Landing() {
   return (
     <>
