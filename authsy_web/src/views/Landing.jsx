@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Link } from 'react-router-dom'
+
 import Navbar from "../components/Navbar.js";
 import Footer from "../components/Footer.js";
 
@@ -29,7 +31,12 @@ export default function Landing() {
                     </h1>
                   <p className="mt-4 text-lg text-gray-300">
                     Authsy is the next big thing. Fast, Convinent and Secure two factor authentication using sound and magic.
-                    </p>
+                  </p>
+                  <Link to="/login">
+                    <button className="w-25 transform text-white px-6 py-2 mt-10 text-3xl border-4 border-white">
+                      Get Started
+                    </button>
+                  </Link>
                 </div>
               </div>
 
