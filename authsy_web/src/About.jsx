@@ -1,6 +1,6 @@
 import React from "react";
 
-const About: React.FC = () => (
+const About = () => (
   <h1>This is a PWA</h1>
 );
 
