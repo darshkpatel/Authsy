@@ -3,6 +3,8 @@ import React from "react";
 import Navbar from "../components/Navbar.js";
 import Footer from "../components/Footer.js";
 
+import register_bg_2 from '../assets/img/register_bg_2.png';
+
 export default function Landing() {
   return (
     <>
@@ -18,7 +20,6 @@ export default function Landing() {
               backgroundSize: "100%",
               backgroundRepeat: "no-repeat"
             }}>
-
           </div>
           <div className="container relative mx-auto">
             <div className="items-center flex flex-wrap">
