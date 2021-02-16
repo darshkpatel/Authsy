@@ -2,10 +2,15 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
-const { roles } = require('../config/roles');
+// const { roles } = require('../config/roles');
 
 const userSchema = mongoose.Schema(
   {
+    googleId: {
+      type: String,
+      // required: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,
@@ -23,9 +28,15 @@ const userSchema = mongoose.Schema(
         }
       },
     },
-    password: {
+    photo: {
       type: String,
       required: true,
+      trim: true,
+      default: 'https://res.cloudinary.com/brij1999/image/upload/v1574787385/Connect_plus/user_purple.png',
+    },
+    password: {
+      type: String,
+      // required: true,
       trim: true,
       minlength: 8,
       validate(value) {
@@ -35,11 +46,11 @@ const userSchema = mongoose.Schema(
       },
       private: true, // used by the toJSON plugin
     },
-    role: {
-      type: String,
-      enum: roles,
-      default: 'user',
-    },
+    // role: {
+    //   type: String,
+    //   enum: roles,
+    //   default: 'user',
+    // },
   },
   {
     timestamps: true,
