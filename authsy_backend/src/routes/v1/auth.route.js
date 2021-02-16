@@ -3,6 +3,7 @@ const passport = require('passport');
 const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
+// const generateAccessToken = require('../../config/jwt');
 
 const router = express.Router();
 
@@ -19,9 +20,28 @@ router.get(
     scope: ['https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/userinfo.email'],
   })
 );
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/v1/auth/google' }), function (req, res) {
-  res.redirect('/v1/docs');
-});
+
+router.get(
+  '/google/callback',
+  passport.authenticate(
+    'google',
+    {
+      session: false,
+    },
+    { failureRedirect: '/login' }
+  ),
+  function (req, res) {
+    // console.log(req.user);
+    // const accessToken = generateAccessToken(req.user.id);
+    // res.render('authenticated.html', {
+    //   token: accessToken
+    // });
+    const { token } = req.user;
+    // res.json({ accessToken });
+    res.redirect(`http://localhost:3000?token=${token}`);
+    // res.json('success');
+  }
+);
 
 module.exports = router;
 
