@@ -1,11 +1,16 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserView,
+  MobileView,
+} from "react-device-detect";
 const Login = lazy(() => import("./views/Login"));
 const Landing = lazy(() => import("./views/Landing"));
 const Dashboard = lazy(() => import("./views/Dashboard"));
-
+const MobileDashboard = lazy(() => import("./views/mobile/Dashboard"));
 const App = () => (
   <Router>
+    <BrowserView>
     <Suspense fallback={<div>Loading...</div>}>
       <Switch>
         <Route path="/login">
@@ -20,6 +25,16 @@ const App = () => (
         
       </Switch>
     </Suspense>
+    </BrowserView>
+    <MobileView>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Switch>
+        <Route path="/">
+          <MobileDashboard />
+        </Route>     
+      </Switch>
+    </Suspense>
+    </MobileView>
   </Router>
 );
 
