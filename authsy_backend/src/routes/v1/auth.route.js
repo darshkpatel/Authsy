@@ -17,29 +17,21 @@ router.post('/reset-password', validate(authValidation.resetPassword), authContr
 router.get(
   '/google',
   passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/userinfo.email'],
+    scope: ['profile', 'email'],
   })
 );
 
 router.get(
   '/google/callback',
-  passport.authenticate(
-    'google',
-    {
-      session: false,
-    },
-    { failureRedirect: '/login' }
-  ),
+  passport.authenticate('google', {
+    session: false,
+  }),
   function (req, res) {
-    // console.log(req.user);
-    // const accessToken = generateAccessToken(req.user.id);
-    // res.render('authenticated.html', {
-    //   token: accessToken
-    // });
-    const { token } = req.user;
-    // res.json({ accessToken });
-    res.redirect(`http://localhost:3000?token=${token}`);
-    // res.json('success');
+    const accessToken = req.user.tokens.access.token;
+    const refreshToken = req.user.tokens.refresh.token;
+    if (process.env.NODE_ENV === 'production')
+      res.redirect(`${process.env.BASE_URL}/dash?token=Bearer ${accessToken}&refreshtoken=${refreshToken}`);
+    else res.redirect(`${process.env.DEV_BASE_URL}/dash?token=Bearer ${accessToken}&refreshtoken=${refreshToken}`);
   }
 );
 
