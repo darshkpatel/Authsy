@@ -1,4 +1,5 @@
-import 'axios';
+import axios from 'axios';
+
 const api = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
     timeout: 5000,
@@ -15,7 +16,7 @@ api.interceptors.response.use(
    response => response,
    error => {
        const originalRequest = error.config;
-       if (error.response.status === 401 && originalRequest.url === baseURL+'v1/auth/refresh-tokens/') {
+       if (error.response.status === 401 && originalRequest.url === process.env.REACT_APP_BASE_URL+'auth/refresh-tokens/') {
            window.location.href = '/login/';
            return Promise.reject(error);
        }
@@ -32,17 +33,17 @@ api.interceptors.response.use(
                    console.log(tokenParts.exp);
 
                    if (tokenParts.exp > now) {
-                       return axiosInstance
-                       .post('/v1/auth/refresh-tokens', {refresh: refreshToken})
+                       return api
+                       .post('/auth/refresh-tokens', {refresh: refreshToken})
                        .then((response) => {
            
                            localStorage.setItem('access_token', response.data.access.token);
                            localStorage.setItem('refresh_token', response.data.refresh.token);
            
-                           axiosInstance.defaults.headers['Authorization'] = "Bearer " + response.data.access.token;
+                           api.defaults.headers['Authorization'] = "Bearer " + response.data.access.token;
                            originalRequest.headers['Authorization'] = "Bearer " + response.data.access.token;
            
-                           return axiosInstance(originalRequest);
+                           return api(originalRequest);
                        })
                        .catch(err => {
                            console.log(err)

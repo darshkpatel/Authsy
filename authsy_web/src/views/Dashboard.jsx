@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, {useEffect, useState} from "react";
+import {getUser} from '../utils/auth'
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 import { getCookie } from 'react-use-cookie';
@@ -10,9 +10,24 @@ export default function Login() {
     localStorage.setItem('access_token', cookie.accessToken)
     localStorage.setItem('refresh_token', cookie.refreshToken)
   }
+  
+  const [user, setUser] = useState()
+  useEffect(() => {
+    const fetchData = async () => {
+      // eslint-disable-next-line no-use-before-define
+      const _user = await getUser()
+      console.log(_user)
+      setUser(_user)
+    };
+    fetchData();
+     
+  }, []);
+
+  // ToDo: Add Loader while fetching user
   return (
     <>
       <Navbar transparent />
+      {user && 
       <main>
         <section className="absolute w-full h-full">
           <div
@@ -27,6 +42,9 @@ export default function Login() {
           <div className="container mx-auto px-4 h-full">
             <div className="flex content-center items-center justify-center h-full">
               <div className="w-full lg:w-4/12 px-4">
+              <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
+                {`Hey! ${user.name}`}
+              </div>
                 <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                   <h1>Dashboard</h1>
@@ -41,6 +59,7 @@ export default function Login() {
           <FooterSmall absolute />
         </section>
       </main>
+      }
     </>
   );
 }
