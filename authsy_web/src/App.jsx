@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import {
   BrowserView,
   MobileView,
@@ -29,9 +29,10 @@ const App = () => (
     <MobileView>
     <Suspense fallback={<div>Loading...</div>}>
       <Switch>
-        <Route path="/">
+        <Route path="/mobile">
           <MobileDashboard />
-        </Route>     
+        </Route>
+        <Redirect from="/" to="/mobile"/>     
       </Switch>
     </Suspense>
     </MobileView>
