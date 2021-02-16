@@ -5,8 +5,11 @@ import FooterSmall from "../components/FooterSmall.js";
 import { getCookie } from 'react-use-cookie';
 
 export default function Login() {
-  const cookie = getCookie('JWT');
-
+  const cookie = JSON.parse(getCookie('JWT'));
+  if(cookie) {
+    localStorage.setItem('access_token', cookie.accessToken)
+    localStorage.setItem('refresh_token', cookie.refreshToken)
+  }
   return (
     <>
       <Navbar transparent />
@@ -28,7 +31,7 @@ export default function Login() {
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                   <h1>Dashboard</h1>
                   <div>
-                    {cookie}
+                    {JSON.stringify(cookie)}
                   </div>
                   </div>
                 </div>
