@@ -29,9 +29,14 @@ router.get(
   function (req, res) {
     const accessToken = req.user.tokens.access.token;
     const refreshToken = req.user.tokens.refresh.token;
+    res.cookie('JWT', JSON.stringify({accessToken, refreshToken}), {
+      maxAge: 1000 * 30 * 60,
+      httpOnly: false,
+      sameSite: true,
+     })
     if (process.env.NODE_ENV === 'production')
-      res.redirect(`${process.env.BASE_URL}/dash?token=Bearer ${accessToken}&refreshtoken=${refreshToken}`);
-    else res.redirect(`${process.env.DEV_BASE_URL}/dash?token=Bearer ${accessToken}&refreshtoken=${refreshToken}`);
+      res.redirect(`${process.env.BASE_URL}/dash`);
+    else res.redirect(`${process.env.DEV_BASE_URL}/dash`);
   }
 );
 

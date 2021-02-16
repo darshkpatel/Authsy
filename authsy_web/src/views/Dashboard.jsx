@@ -2,8 +2,11 @@ import React from "react";
 
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
+import { getCookie } from 'react-use-cookie';
 
 export default function Login() {
+  const cookie = getCookie('JWT');
+
   return (
     <>
       <Navbar transparent />
@@ -24,6 +27,9 @@ export default function Login() {
                 <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                   <h1>Dashboard</h1>
+                  <div>
+                    {cookie}
+                  </div>
                   </div>
                 </div>
               </div>
