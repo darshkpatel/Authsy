@@ -1,7 +1,9 @@
 const express = require('express');
+const passport = require('passport');
 const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
+// const generateAccessToken = require('../../config/jwt');
 
 const router = express.Router();
 
@@ -11,6 +13,27 @@ router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
+
+router.get(
+  '/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  })
+);
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    session: false,
+  }),
+  function (req, res) {
+    const accessToken = req.user.tokens.access.token;
+    const refreshToken = req.user.tokens.refresh.token;
+    if (process.env.NODE_ENV === 'production')
+      res.redirect(`${process.env.BASE_URL}/dash?token=Bearer ${accessToken}&refreshtoken=${refreshToken}`);
+    else res.redirect(`${process.env.DEV_BASE_URL}/dash?token=Bearer ${accessToken}&refreshtoken=${refreshToken}`);
+  }
+);
 
 module.exports = router;
 
