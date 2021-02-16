@@ -61,7 +61,7 @@ export default function Navbar(props) {
                   </button>
                 </Link>
 
-                <Link to="/login">
+                <Link to="/signup">
                   <button
                     className={
                       (props.transparent
