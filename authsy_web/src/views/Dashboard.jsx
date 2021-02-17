@@ -2,15 +2,8 @@ import React, {useEffect, useState} from "react";
 import {getUser} from '../utils/auth'
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
-import { getCookie } from 'react-use-cookie';
 
 export default function Login() {
-  const cookie = JSON.parse(getCookie('JWT'));
-  if(cookie) {
-    localStorage.setItem('access_token', cookie.accessToken)
-    localStorage.setItem('refresh_token', cookie.refreshToken)
-  }
-  
   const [user, setUser] = useState()
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +42,9 @@ export default function Login() {
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                   <h1>Dashboard</h1>
                   <div>
-                    {JSON.stringify(cookie)}
+                    {`Access Token: ${localStorage.getItem('access_token')}`}
+                    <br />  
+                    {`Refresh Token: ${localStorage.getItem('refresh_token')}`}
                   </div>
                   </div>
                 </div>
