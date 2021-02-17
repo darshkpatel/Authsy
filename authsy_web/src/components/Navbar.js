@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { isAuthenticated, handleLogout } from "../utils/auth"
 
 export default function Navbar(props) {
