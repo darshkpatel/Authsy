@@ -1,7 +1,9 @@
 const express = require('express');
 const passport = require('passport');
 const validate = require('../../middlewares/validate');
-const auth = require('../../middlewares/auth');
+const { auth } = require('../../middlewares/auth');
+const base32 = require('thirty-two');
+var crypto = require('crypto');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
 // const generateAccessToken = require('../../config/jwt');
@@ -14,32 +16,10 @@ router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
-router.get('/verify', auth(''), (req, res) => {res.send({valid: true});});
-router.get(
-  '/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email'],
-  })
-);
+router.get('/verify', auth(''), (req, res) => { res.send({ valid: true }); });
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], }));
+router.get('/google/callback', passport.authenticate('google', { session: false,}), authController.googleCallback);
 
-router.get(
-  '/google/callback',
-  passport.authenticate('google', {
-    session: false,
-  }),
-  function (req, res) {
-    const accessToken = req.user.tokens.access.token;
-    const refreshToken = req.user.tokens.refresh.token;
-    res.cookie('JWT', JSON.stringify({accessToken, refreshToken}), {
-      maxAge: 1000 * 30 * 60,
-      httpOnly: false,
-      sameSite: true,
-     })
-    if (process.env.NODE_ENV === 'production')
-      res.redirect(`${process.env.BASE_URL}/auth/success`);
-    else res.redirect(`${process.env.DEV_BASE_URL}/auth/success`);
-  }
-);
 
 module.exports = router;
 
