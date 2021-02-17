@@ -1,8 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { isAuthenticated, handleLogout } from "../utils/auth"
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
+  const [isLoggedIn, setLogin] = useState()
+  useEffect(() => {
+    const checkLogin = async () => {
+      // eslint-disable-next-line no-use-before-define
+      setLogin(await isAuthenticated())
+    };
+    checkLogin();
+  }, []);
+
+
   return (
     <>
       <nav
@@ -46,7 +57,30 @@ export default function Navbar(props) {
           >
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="flex items-center">
-                <Link to="/login">
+                {
+                  isLoggedIn ? (
+                  // <Link to="/login">
+                  <button
+                    className={
+                      (props.transparent
+                        ? "bg-white text-gray-800 active:bg-gray-100"
+                        : "bg-pink-500 text-white active:bg-pink-600") +
+                      " text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                    }
+                    type="button"
+                    onClick={(e) => {
+                      handleLogout();
+                      }}
+                    style={{ transition: "all .15s ease" }}
+                  >
+                    <i className="fas fa-user"></i> Logout
+                  </button>
+                // </Link>
+                ) 
+                : 
+                (
+                  <>
+                  <Link to="/login">
                   <button
                     className={
                       (props.transparent
@@ -60,21 +94,24 @@ export default function Navbar(props) {
                     <i className="fas fa-user"></i> Login
                   </button>
                 </Link>
-
+                
                 <Link to="/signup">
-                  <button
-                    className={
-                      (props.transparent
-                        ? "bg-white text-gray-800 active:bg-gray-100"
-                        : "bg-pink-500 text-white active:bg-pink-600") +
-                      " text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
-                    }
-                    type="button"
-                    style={{ transition: "all .15s ease" }}
-                  >
-                    <i className="fas fa-user"></i> Sign up
-                  </button>
-                </Link>
+                <button
+                  className={
+                    (props.transparent
+                      ? "bg-white text-gray-800 active:bg-gray-100"
+                      : "bg-pink-500 text-white active:bg-pink-600") +
+                    " text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                  }
+                  type="button"
+                  style={{ transition: "all .15s ease" }}
+                >
+                  <i className="fas fa-user"></i> Sign up
+                </button>
+              </Link>
+              </>
+                )
+                  }
               </li>
             </ul>
           </div>

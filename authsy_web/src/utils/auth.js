@@ -1,4 +1,5 @@
 import api from './api'
+
 export const getJWTUser = () => {
     const accessToken = localStorage.getItem('access_token');
 
@@ -24,4 +25,15 @@ export const isAuthenticated = async () => {
         status = false;
     }
     return status;
+}
+
+export const handleLogout = async () => {
+    const isLoggedIn = await isAuthenticated();
+    if(isLoggedIn) {
+        localStorage.removeItem('access_token');
+        const refreshToken = localStorage.getItem('refresh_token');
+        await api.post(`/auth/logout`, { refreshToken });
+        window.location.href = `${window.location.hostname}/login`;
+    }
+    return;
 }
