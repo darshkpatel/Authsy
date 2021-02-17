@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
+const base32 = require('thirty-two');
+var crypto = require('crypto');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -36,6 +38,50 @@ const resetPassword = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const googleCallback = catchAsync(async (req, res) => {
+  const accessToken = req.user.tokens.access.token;
+  const refreshToken = req.user.tokens.refresh.token;
+  res.cookie('JWT', JSON.stringify({ accessToken, refreshToken }), {
+    maxAge: 1000 * 30 * 60,
+    httpOnly: false,
+    sameSite: true,
+  })
+  if (process.env.NODE_ENV === 'production')
+    res.redirect(`${process.env.BASE_URL}/auth/success`);
+  else res.redirect(`${process.env.DEV_BASE_URL}/auth/success`);
+})
+
+const totpSecretGenerate = catchAsync(async (req, res) => {
+  var secret = base32.encode(crypto.randomBytes(16));
+  //Discard equal signs (part of base32, 
+  //not required by Google Authenticator)
+  //Base32 encoding is required by Google Authenticator. 
+  //Other applications
+  //may place other restrictions on the shared key format.
+  const user = req.user
+  if (!req.user.key) {
+    secret = secret.toString().replace(/=/g, '');
+    const updated = await userService.updateUserKeyById(user._id, secret)
+    res.send({ user: updated })
+  } else {
+    res.send({ message: 'Key already exists' })
+  }
+})
+
+const totpSecretQR = catchAsync(async (req, res) => {
+  var url = null;
+  const user = await userService.getUserById(req.user._id)
+  if (user.key) {
+    var qrData = `otpauth://totp/Authsy:${user.email}?secret=${user.key}`
+    url = "https://chart.googleapis.com/chart?chs=166x166&cht=qr&chl=" +
+      qrData;
+  }
+  res.send({
+    user: req.user,
+    qrUrl: url
+  });
+})
+
 module.exports = {
   register,
   login,
@@ -43,4 +89,7 @@ module.exports = {
   refreshTokens,
   forgotPassword,
   resetPassword,
+  googleCallback,
+  totpSecretGenerate,
+  totpSecretQR
 };

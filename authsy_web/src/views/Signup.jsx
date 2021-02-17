@@ -1,22 +1,10 @@
-import React, {useState, useEffect} from "react";
-import { Redirect } from "react-router-dom";
+import React from "react";
+
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
-import {isAuthenticated} from "../utils/auth"
+import Steps from '../components/Steps.js';
 
-export default function Login() {
-  const [isLoggedIn, setLogin] = useState()
-  useEffect(() => {
-    const checkLogin = async () => {
-      // eslint-disable-next-line no-use-before-define
-      setLogin(await isAuthenticated())
-    };
-    checkLogin();
-  }, []);
-  console.log({isLoggedIn})
-  if(isLoggedIn){
-    return <Redirect to="/dash" />
-  }
+export default function Signup() {
   return (
     <>
       <Navbar transparent />
@@ -31,6 +19,7 @@ export default function Login() {
               backgroundRepeat: "no-repeat"
             }}
           ></div>
+          <Steps />
           <div className="container mx-auto px-4 h-full">
             <div className="flex content-center items-center justify-center h-full">
               <div className="w-full lg:w-4/12 px-4">
@@ -60,8 +49,8 @@ export default function Login() {
                         style={{ transition: "all .15s ease" }}
                         onClick={(e) => {
                           // e.preventDefault();
-                          window.location.href= process.env.REACT_APP_BASE_URL+`/auth/google`;
-                          }}
+                          window.location.href = process.env.REACT_APP_BASE_URL + `/auth/google`;
+                        }}
                       >
                         <img
                           alt="..."

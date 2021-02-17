@@ -39,6 +39,15 @@ const getUserById = async (id) => {
 };
 
 /**
+ * Get user by google Id
+ * @param {string} googleId
+ * @returns {Promise<User>}
+ */
+const getUserBygoogleId = async (googleId) => {
+  return User.findOne({ googleId });
+};
+
+/**
  * Get user by email
  * @param {string} email
  * @returns {Promise<User>}
@@ -67,6 +76,21 @@ const updateUserById = async (userId, updateBody) => {
 };
 
 /**
+ * Update user key
+ * @param {ObjectId} userId
+ * @param {String} key
+ * @returns {Promise<User>}
+ */
+const updateUserKeyById = async (userId, key) => {
+  const user = await User.findOneAndUpdate({ _id: userId }, { key: key },
+    options = { upsert: false, new: true });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return user;
+};
+
+/**
  * Delete user by id
  * @param {ObjectId} userId
  * @returns {Promise<User>}
@@ -84,7 +108,9 @@ module.exports = {
   createUser,
   queryUsers,
   getUserById,
+  getUserBygoogleId,
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  updateUserKeyById
 };
