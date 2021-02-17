@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 import {isAuthenticated} from "../utils/auth"
+
 export default function Login() {
   const [isLoggedIn, setLogin] = useState()
   useEffect(() => {

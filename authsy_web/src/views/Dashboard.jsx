@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getUser} from '../utils/auth'
+import {getUser} from '../utils/auth';
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 
