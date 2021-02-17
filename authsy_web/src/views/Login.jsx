@@ -1,9 +1,21 @@
-import React from "react";
-
+import React, {useState, useEffect} from "react";
+import { Redirect } from "react-router-dom";
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
-
+import {isAuthenticated} from "../utils/auth"
 export default function Login() {
+  const [isLoggedIn, setLogin] = useState()
+  useEffect(() => {
+    const checkLogin = async () => {
+      // eslint-disable-next-line no-use-before-define
+      setLogin(await isAuthenticated())
+    };
+    checkLogin();
+  }, []);
+  console.log({isLoggedIn})
+  if(isLoggedIn){
+    return <Redirect to="/dash" />
+  }
   return (
     <>
       <Navbar transparent />
