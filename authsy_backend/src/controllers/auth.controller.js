@@ -36,6 +36,18 @@ const resetPassword = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const googleCallback = catchAsync(async (req, res) => {
+    const accessToken = req.user.tokens.access.token;
+    const refreshToken = req.user.tokens.refresh.token;
+    res.cookie('JWT', JSON.stringify({ accessToken, refreshToken }), {
+      maxAge: 1000 * 30 * 60,
+      httpOnly: false,
+      sameSite: true,
+    })
+    if (process.env.NODE_ENV === 'production')
+      res.redirect(`${process.env.BASE_URL}/auth/success`);
+    else res.redirect(`${process.env.DEV_BASE_URL}/auth/success`);
+})
 module.exports = {
   register,
   login,
@@ -43,4 +55,5 @@ module.exports = {
   refreshTokens,
   forgotPassword,
   resetPassword,
+  googleCallback
 };
