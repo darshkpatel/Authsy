@@ -1,6 +1,8 @@
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const TotpStrategy = require('passport-totp').Strategy;
+const base32 = require('thirty-two');
 const config = require('./config');
 const { getUserBygoogleId } = require('../services/user.service');
 const { tokenTypes } = require('./tokens');
@@ -53,6 +55,18 @@ passport.use(
     }
   )
 );
+
+
+passport.use(
+  new TotpStrategy((user, done) => {
+    var key = user.key;
+    if(!key){
+      return done(new Error('No Key Present'))
+    } else {
+      return done(null, base32.decode(key), 30); // Valid Key Period
+    }
+  })
+)
 
 module.exports = {
   jwtStrategy,

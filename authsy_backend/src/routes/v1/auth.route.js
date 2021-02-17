@@ -2,11 +2,10 @@ const express = require('express');
 const passport = require('passport');
 const validate = require('../../middlewares/validate');
 const { auth } = require('../../middlewares/auth');
-const base32 = require('thirty-two');
-var crypto = require('crypto');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
 // const generateAccessToken = require('../../config/jwt');
+const config = require('../../config/config');
 
 const router = express.Router();
 
@@ -19,7 +18,8 @@ router.post('/reset-password', validate(authValidation.resetPassword), authContr
 router.get('/verify', auth(''), (req, res) => { res.send({ valid: true }); });
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], }));
 router.get('/google/callback', passport.authenticate('google', { session: false,}), authController.googleCallback);
-
+router.post('/totp-setup', auth(''), authController.totpSecretGenerate);
+if(config.env == 'development') router.get('/totp-qr', auth(''), authController.totpSecretQR);
 
 module.exports = router;
 
