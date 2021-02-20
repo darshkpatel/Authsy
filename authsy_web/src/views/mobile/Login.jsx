@@ -5,6 +5,7 @@ import FooterSmall from "../../components/FooterSmall.js";
 // import { isAuthenticated } from "../../utils/auth";
 
 export default function MobileLogin() {
+  // eslint-disable-next-line no-unused-vars
   const [isLoggedIn, setLogin] = useState();
   useEffect(() => {
     const checkLogin = async () => {

@@ -6,6 +6,7 @@ import FooterSmall from "../components/FooterSmall.js";
 
 export default function Login() {
   const [user, setUser] = useState();
+  // eslint-disable-next-line no-unused-vars
   const [key, setKey] = useState();
   useEffect(() => {
     const fetchData = async () => {
