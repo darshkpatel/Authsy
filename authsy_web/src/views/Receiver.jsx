@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 
 export default function Login() {
-  const [otp, setotp] = useState("");
+  const [otp, setotp] = useState();
 
   window.Quiet.init({
     profilesPrefix: "/",
@@ -66,7 +66,6 @@ export default function Login() {
                         receiveOTP();
                       }}
                     >
-                      
                       Receive OTP
                     </button>
                     <button

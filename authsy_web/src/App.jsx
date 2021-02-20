@@ -8,6 +8,7 @@ const Signup = lazy(() => import("./views/Signup"));
 const MobileDashboard = lazy(() => import("./views/mobile/Dashboard"));
 const AuthSucess = lazy(() => import("./views/AuthSucess"));
 const Receive = lazy(() => import("./views/Receiver"));
+const MobileLogin = lazy(() => import("./views/mobile/Login"));
 
 const App = () => {
   const isDesktop = useMedia('(min-width: 900px)');
@@ -34,6 +35,7 @@ const App = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
             <Route path="/mobile" component={MobileDashboard} />
+            <Route path="/mlogin" component={MobileLogin} /> 
             <Redirect from="/" to="/mobile" />
           </Switch>
         </Suspense>
