@@ -4,6 +4,8 @@ import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 import Steps from '../components/Steps.js';
 
+import { Link } from "react-router-dom";
+
 export default function Signup() {
   return (
     <>
@@ -19,7 +21,7 @@ export default function Signup() {
               backgroundRepeat: "no-repeat"
             }}
           ></div>
-          <Steps />
+          <Steps step={1} />
           <div className="container mx-auto px-4 h-full">
             <div className="flex content-center items-center justify-center h-full">
               <div className="w-full lg:w-4/12 px-4">
@@ -111,13 +113,15 @@ export default function Signup() {
                       </div>
 
                       <div className="text-center mt-6">
-                        <button
-                          className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
-                          type="button"
-                          style={{ transition: "all .15s ease" }}
-                        >
-                          Sign In
-                        </button>
+                        <Link to="/addDevice">
+                          <button
+                            className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
+                            type="button"
+                            style={{ transition: "all .15s ease" }}
+                          >
+                            Sign In
+                          </button>
+                        </Link>
                       </div>
                     </form>
                   </div>
