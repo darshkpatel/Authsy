@@ -14,7 +14,9 @@ export default function Step2() {
 											</h6>
                             </div>
                             <img src={QRCode} alt=".." style={{ width: "100%" }} />
-                            
+                            <div className="text-center">
+                            <u><b>https://authsy.darshkpatel.com/mobile</b></u>
+                            </div>
                         </div>
                     </div>
                 </div>
