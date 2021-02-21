@@ -8,7 +8,7 @@ const Signup = lazy(() => import("./views/Signup"));
 const MobileDashboard = lazy(() => import("./views/mobile/Dashboard"));
 const AuthSucess = lazy(() => import("./views/AuthSucess"));
 const AddDevice = lazy(() => import("./views/AddDevice"));
-const Receive = lazy(() => import("./views/Receiver"));
+// const Receive = lazy(() => import("./views/Receiver"));
 const MobileLogin = lazy(() => import("./views/mobile/Login"));
 
 const App = () => {

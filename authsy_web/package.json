@@ -22,7 +22,7 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   },
   "scripts": {
-    "start": "PORT=3001 craco start",
+    "start": "craco start",
     "build": "craco build",
     "test": "craco test"
   },
