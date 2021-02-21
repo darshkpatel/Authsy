@@ -9,6 +9,7 @@ const MobileDashboard = lazy(() => import("./views/mobile/Dashboard"));
 const AuthSucess = lazy(() => import("./views/AuthSucess"));
 const Receive = lazy(() => import("./views/Receiver"));
 const MobileLogin = lazy(() => import("./views/mobile/Login"));
+const AddDevice = lazy(() => import("./views/AddDevice"));
 
 const App = () => {
   const isDesktop = useMedia('(min-width: 900px)');
@@ -19,11 +20,12 @@ const App = () => {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/dash" component={Dashboard} />
-            <Route path="/receive" component={Receive} /> 
+            <Route path="/receive" component={Receive} />
             <Route path="/signup" component={Signup} />
+            <Route path="/addDevice" component={AddDevice} />
             <Route path="/auth/success" component={AuthSucess} />
             <Route path="/" component={Landing} />
-            <Redirect from="/mobile" to="/" /> 
+            <Redirect from="/mobile" to="/" />
           </Switch>
         </Suspense>
       </Router>
@@ -35,7 +37,7 @@ const App = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
             <Route path="/mobile" component={MobileDashboard} />
-            <Route path="/mlogin" component={MobileLogin} /> 
+            <Route path="/mlogin" component={MobileLogin} />
             <Redirect from="/" to="/mobile" />
           </Switch>
         </Suspense>
