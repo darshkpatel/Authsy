@@ -5,12 +5,17 @@ import FooterSmall from "../components/FooterSmall.js";
 
 export default function Login() {
   const [otp, setotp] = useState();
-
+  
+  if(typeof window.Quiet != "undefined") {
   window.Quiet.init({
-    profilesPrefix: "/",
-    memoryInitializerPrefix: "/",
-    libfecPrefix: "/"
-  });
+      profilesPrefix: "/",
+      memoryInitializerPrefix: "/",
+      libfecPrefix: "/"
+    });
+  }
+  else
+    window.location.reload(true);  
+  
   var profilename = "audible";
   var recvObj = {
     profilename,

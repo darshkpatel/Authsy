@@ -7,11 +7,6 @@ import { getUser } from "../../utils/auth";
 export default function Login() {
   const [user, setUser] = useState();
   useEffect(() => {
-    window.Quiet.init({
-      profilesPrefix: "/",
-      memoryInitializerPrefix: "/",
-      libfecPrefix: "/"
-    });
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
       const _user = await getUser();
@@ -21,8 +16,18 @@ export default function Login() {
     fetchData();
   }, []);
 
+  if(typeof window.Quiet != "undefined") {
+    window.Quiet.init({
+        profilesPrefix: "/",
+        memoryInitializerPrefix: "/",
+        libfecPrefix: "/"
+      });
+    }
+    else
+      window.location.reload(true);  
+
   function sendOTP(e) {
-    var payload = user.key;
+    var payload = user.key ? user.key : "OTP";
     var profilename = "audible";
     var transmit = window.Quiet.transmitter({ profile: profilename });
     transmit.transmit(window.Quiet.str2ab(payload));
