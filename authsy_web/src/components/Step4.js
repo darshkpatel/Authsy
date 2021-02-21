@@ -3,7 +3,7 @@ import SuccessGif from '../assets/img/success.gif';
 
 export default function Step4() {
     return (
-        <div className="container mx-auto px-4" style={{marginTop: '20%'}}>
+        <div className="container mx-auto px-4" style={{marginTop: '12%'}}>
             <div className="flex content-center items-center justify-center h-full">
                 <div className="w-full lg:w-4/12 px-4">
                     <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white border-0">
