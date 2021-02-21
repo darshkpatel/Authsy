@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Navbar from "../../components/Navbar.js";
 import FooterSmall from "../../components/FooterSmall.js";
+import { getUser } from "../../utils/auth";
 
 export default function Login() {
+  const [user, setUser] = useState();
+  useEffect(() => {
+    window.Quiet.init({
+      profilesPrefix: "/",
+      memoryInitializerPrefix: "/",
+      libfecPrefix: "/"
+    });
+    const fetchData = async () => {
+      // eslint-disable-next-line no-use-before-define
+      const _user = await getUser();
+      console.log(_user);
+      setUser(_user);
+    };
+    fetchData();
+  }, []);
+
+  function sendOTP(e) {
+    var payload = user.key;
+    var profilename = "audible";
+    var transmit = window.Quiet.transmitter({ profile: profilename });
+    transmit.transmit(window.Quiet.str2ab(payload));
+  }
   return (
     <>
       <Navbar transparent />
@@ -23,7 +46,18 @@ export default function Login() {
               <div className="w-full lg:w-4/12 px-4">
                 <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                  <h1>MOBILE VIEW</h1>
+                    <h1>MOBILE VIEW</h1>
+                    <h2>payload = {user ? user.key : null}</h2>
+                    <button
+                      className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
+                      type="button"
+                      style={{ transition: "all .15s ease" }}
+                      onClick={() => {
+                        sendOTP();
+                      }}
+                    >
+                      Send OTP
+                    </button>
                   </div>
                 </div>
               </div>
