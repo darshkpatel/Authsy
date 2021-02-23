@@ -9,13 +9,13 @@ export default function Step2() {
                     <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white border-0">
                         <div className="rounded-t mb-0 px-6 py-6">
                             <div className="text-center mb-3">
-                                <h6 className="text-gray-600 text-sm font-bold">
-                                    Scan the qr code on your phone
-											</h6>
+                                <h6 className="text-blue-600 text-md font-bold">Setup 2FA on Phone</h6>
+                                <h6 className="text-gray-600 text-sm">Visit: <u><b>{process.env.REACT_APP_FRONTEND_URL}</b></u></h6>
+                                <h6 className="text-gray-600 text-sm font-bold">OR</h6>
+                                <h6 className="text-gray-600 text-sm">Scan this url</h6>
                             </div>
                             <img src={QRCode} alt=".." style={{ width: "100%" }} />
                             <div className="text-center">
-                            <u><b>{process.env.REACT_APP_FRONTEND_URL}</b></u>
                             </div>
                         </div>
                     </div>
