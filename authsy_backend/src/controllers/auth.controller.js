@@ -96,7 +96,10 @@ const setMobileConfigured = catchAsync(async (req, res) => {
 const getKey = catchAsync(async (req, res) => {
   if (!req.user.key) {
     res.send({ message: 'Error! No Key Configured' })
-  } else {
+  } else if (req.user.mobileConfigured){
+    res.send({ message: 'Error! Key already Configured' })
+  } 
+  else {
     //ToDo: Check if deleting the key at this point is viable
     const key = String(req.user.key)
     res.send({key})
