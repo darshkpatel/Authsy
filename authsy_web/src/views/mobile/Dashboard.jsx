@@ -27,7 +27,7 @@ export default function Login() {
       window.location.reload(true);  
 
   function sendOTP(e) {
-    var payload = user.key ? user.key : "OTP";
+    var payload = "OTP";
     var profilename = "audible";
     var transmit = window.Quiet.transmitter({ profile: profilename });
     transmit.transmit(window.Quiet.str2ab(payload));

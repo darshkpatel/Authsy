@@ -37,8 +37,3 @@ export const handleLogout = async () => {
     }
     return;
 }
-
-export const generateKey = async () => {
-    const user = getJWTUser();
-    return user ? await (await api.post(`/auth/totp-setup`)).data : null;
-}

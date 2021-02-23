@@ -7,7 +7,6 @@ const Dashboard = lazy(() => import("./views/Dashboard"));
 const Signup = lazy(() => import("./views/Signup"));
 const MobileDashboard = lazy(() => import("./views/mobile/Dashboard"));
 const AuthSucess = lazy(() => import("./views/AuthSucess"));
-const Receive = lazy(() => import("./views/Receiver"));
 const MobileLogin = lazy(() => import("./views/mobile/Login"));
 const AddDevice = lazy(() => import("./views/AddDevice"));
 
@@ -20,7 +19,6 @@ const App = () => {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/dash" component={Dashboard} />
-            <Route path="/receive" component={Receive} />
             <Route path="/signup" component={Signup} />
             <Route path="/addDevice" component={AddDevice} />
             <Route path="/auth/success" component={AuthSucess} />

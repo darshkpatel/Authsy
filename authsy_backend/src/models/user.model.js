@@ -38,8 +38,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: false,
       trim: true,
-      // testing purpose
-      // private: true,
+      private: true,
     },
     password: {
       type: String,

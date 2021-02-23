@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getUser, generateKey } from "../utils/auth";
-import { Link } from "react-router-dom";
+import { getUser } from "../utils/auth";
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 
 export default function Login() {
   const [user, setUser] = useState();
-  // eslint-disable-next-line no-unused-vars
-  const [key, setKey] = useState();
   useEffect(() => {
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
@@ -17,12 +14,6 @@ export default function Login() {
     };
     fetchData();
   }, []);
-
-  async function setup2FA() {
-    const _user = await generateKey();
-    console.log(_user);
-    setKey(_user.key);
-  }
 
   // ToDo: Add Loader while fetching user
   return (
@@ -58,25 +49,6 @@ export default function Login() {
                           "refresh_token"
                         )}`}
                       </div>
-                      <button
-                        className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
-                        type="button"
-                        style={{ transition: "all .15s ease" }}
-                        onClick={() => {
-                          setup2FA();
-                        }}
-                      >
-                        Setup 2FA
-                      </button>
-                      <Link to="/receive">
-                        <button
-                          className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
-                          type="button"
-                          style={{ transition: "all .15s ease" }}
-                        >
-                          Next
-                        </button>
-                      </Link>
                     </div>
                   </div>
                 </div>
