@@ -16,6 +16,18 @@ export const getUser = async () => {
     const user = getJWTUser();
     return user ? await (await api.get(`/users/${user}`)).data : null;
 }
+
+export const setMobileConfigured = async () => {
+    return await (await api.post(`/auth/mobileConfigured`)).data
+}
+
+export const generateKey = async () => {
+    return await (await api.post(`/auth/totp-setup`)).data
+}
+
+export const checkStorageSet = () => {
+    return localStorage.getItem('access_token') ? true : false;
+}
 export const isAuthenticated = async () => {
     let status = false;
     try{
