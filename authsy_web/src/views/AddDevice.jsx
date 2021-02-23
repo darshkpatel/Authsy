@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 import Steps from '../components/Steps.js';
 
-import Step2 from '../components/Step2.js';
+import Step2 from '../components/Step2.jsx';
 import Step3 from '../components/Step3.js';
 import Step4 from '../components/Step4.js';
 
