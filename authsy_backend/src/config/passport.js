@@ -1,7 +1,7 @@
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const TotpStrategy = require('passport-totp').Strategy;
+const TotpStrategy = require('../lib/passport-totp').Strategy;
 const base32 = require('thirty-two');
 const config = require('./config');
 const { getUserBygoogleId } = require('../services/user.service');
