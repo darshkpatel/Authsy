@@ -93,6 +93,16 @@ const setMobileConfigured = catchAsync(async (req, res) => {
   }
 })
 
+const getKey = catchAsync(async (req, res) => {
+  if (!req.user.key) {
+    res.send({ message: 'Error! No Key Configured' })
+  } else {
+    //ToDo: Check if deleting the key at this point is viable
+    const key = String(req.user.key)
+    res.send({key})
+  }
+})
+
 module.exports = {
   register,
   login,
@@ -103,5 +113,6 @@ module.exports = {
   googleCallback,
   totpSecretGenerate,
   totpSecretQR,
-  setMobileConfigured
+  setMobileConfigured,
+  getKey
 };
