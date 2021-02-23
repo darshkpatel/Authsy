@@ -19,6 +19,7 @@ router.get('/verify', auth(''), (req, res) => { res.send({ valid: true }); });
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], }));
 router.get('/google/callback', passport.authenticate('google', { session: false,}), authController.googleCallback);
 router.post('/totp-setup', auth(''), authController.totpSecretGenerate);
+router.post('/mobileConfigured', auth(''), authController.setMobileConfigured);
 if(config.env == 'development') router.get('/totp-qr', auth(''), authController.totpSecretQR);
 
 module.exports = router;

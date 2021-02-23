@@ -82,6 +82,17 @@ const totpSecretQR = catchAsync(async (req, res) => {
   });
 })
 
+const setMobileConfigured = catchAsync(async (req, res) => {
+  const user = req.user
+  if (!req.user.key) {
+    res.send({ message: 'Error! No Key Configured' })
+  } else {
+    //ToDo: Check if deleting the key at this point is viable
+    const updated = await userService.updateUserMobileConfig(user._id, true)
+    res.send({ user: updated })
+  }
+})
+
 module.exports = {
   register,
   login,
@@ -91,5 +102,6 @@ module.exports = {
   resetPassword,
   googleCallback,
   totpSecretGenerate,
-  totpSecretQR
+  totpSecretQR,
+  setMobileConfigured
 };
