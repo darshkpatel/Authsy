@@ -40,6 +40,12 @@ const userSchema = mongoose.Schema(
       private: false,
       default: false
     },
+    keyGenerated: {
+      type: Boolean,
+      required: false,
+      private: false,
+      default: false
+    },
     key: {
       type: String,
       required: false,
