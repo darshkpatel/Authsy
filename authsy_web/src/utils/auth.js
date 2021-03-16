@@ -25,6 +25,10 @@ export const generateKey = async () => {
     return await (await api.post(`/auth/totp-setup`)).data
 }
 
+export const totpVerify = async (totp) => {
+    return (await api.post(`/auth/totp-verify`, {totp})).data
+}
+
 export const checkStorageSet = () => {
     return localStorage.getItem('access_token') ? true : false;
 }
