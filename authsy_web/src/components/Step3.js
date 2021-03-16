@@ -1,18 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SoundGif from '../assets/img/source.gif'
 
 export default function Step3() {
     const [otp, setotp] = useState();
+    let reciever = useRef();
+    useEffect(() => {
+        if (typeof window.Quiet != "undefined") {
+            window.Quiet.init({
+                profilesPrefix: "/",
+                memoryInitializerPrefix: "/",
+                libfecPrefix: "/"
+            });
 
-    if (typeof window.Quiet != "undefined") {
-        window.Quiet.init({
-            profilesPrefix: "/",
-            memoryInitializerPrefix: "/",
-            libfecPrefix: "/"
-        });
-    }
-    else
-        window.location.reload(true);
+            var receiverOnReceive = function (payload) {
+                onReceive(payload, recvObj);
+            };
+
+            setTimeout(() => {
+                reciever.current = window.Quiet.receiver({
+                    profile: recvObj.profilename,
+                    onReceive: receiverOnReceive
+                });
+            }, 1000)
+            
+        }
+        else
+            window.location.reload();
+        
+
+        // Cleanup
+        return () => {
+            if (typeof window.Quiet != "undefined") {
+                reciever.current.destroy();
+            }
+        }
+    }, [])
 
     var profilename = "audible";
     var recvObj = {
@@ -24,6 +46,7 @@ export default function Step3() {
     function onReceive(recvPayload, recvObj) {
         recvObj.content = window.Quiet.mergeab(recvObj.content, recvPayload);
         recvObj.target = window.Quiet.ab2str(recvObj.content);
+        console.log('Recieved TOTP: ' + recvObj.target);
         onClear();
         setotp(recvObj.target);
     }
@@ -33,13 +56,7 @@ export default function Step3() {
       }
 
     function receiveOTP(e) {        
-        var receiverOnReceive = function (payload) {
-            onReceive(payload, recvObj);
-        };
-        window.Quiet.receiver({
-            profile: recvObj.profilename,
-            onReceive: receiverOnReceive
-        });
+  
     }
     return (
         <div className="container mx-auto px-4">
