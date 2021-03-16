@@ -16,12 +16,16 @@ router.post('/refresh-tokens', validate(authValidation.refreshTokens), authContr
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
 router.get('/verify', auth(''), (req, res) => { res.send({ valid: true }); });
+// Google Login
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], }));
-router.get('/google/callback', passport.authenticate('google', { session: false,}), authController.googleCallback);
+router.get('/google/callback', passport.authenticate('google', { session: false, }), authController.googleCallback);
+
+// 2FA
 router.get('/key', auth(''), authController.getKey);
 router.post('/totp-setup', auth(''), authController.totpSecretGenerate);
+router.post('/totp-verify', auth(''), authController.totpVerify); // Only for Setup Flow
 router.post('/mobileConfigured', auth(''), authController.setMobileConfigured);
-if(config.env == 'development') router.get('/totp-qr', auth(''), authController.totpSecretQR);
+if (config.env == 'development') router.get('/totp-qr', auth(''), authController.totpSecretQR);
 
 module.exports = router;
 
