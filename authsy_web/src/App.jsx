@@ -9,6 +9,7 @@ const MobileDashboard = lazy(() => import("./views/mobile/Dashboard"));
 const AuthSucess = lazy(() => import("./views/AuthSucess"));
 const FlowError = lazy(() => import("./views/mobile/FlowError"));
 const AddDevice = lazy(() => import("./views/AddDevice"));
+const TotpRecieve = lazy(() => import("./views/TotpRecieve"));
 
 const App = () => {
   const isDesktop = useMedia('(min-width: 700px)');
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/signup" component={Signup} />
             <Route path="/addDevice" component={AddDevice} />
             <Route path="/auth/success" component={AuthSucess} />
+            <Route path="/login2FA" component={TotpRecieve} />
             <Route path="/" component={Landing} />
             <Redirect from="/mobile" to="/" />
           </Switch>
