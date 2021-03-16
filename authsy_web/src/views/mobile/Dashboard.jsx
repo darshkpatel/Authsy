@@ -5,6 +5,7 @@ import FooterSmall from "../../components/FooterSmall.js";
 import { isAuthenticated, getUser, setMobileConfigured, checkStorageSet } from "../../utils/auth";
 import api from "../../utils/api"
 import { totp } from "../../utils/totp"
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Login() {
   const [user, setUser] = useState();
@@ -80,6 +81,7 @@ export default function Login() {
     var payload = TOTP;
     var transmit = window.Quiet.transmitter({ profile: "audible" });
     transmit.transmit(window.Quiet.str2ab(payload));
+    toast(`Sending TOTP: ${TOTP}`);
 
   }
   return (
@@ -122,6 +124,15 @@ export default function Login() {
                 </div>
               </div>
             </div>
+            <ToastContainer position="bottom-center"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss={false}
+              draggable
+              pauseOnHover={false} />
           </div>
           <FooterSmall absolute />
         </section>
