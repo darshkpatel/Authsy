@@ -43,7 +43,7 @@ export default function Landing() {
           </div>
           <div
             className="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
-            style={{ height: "70px", transform: "translateZ(0)" }}
+            style={{ height: "70px", transform: "translateY(1px)" }}
           >
             <svg
               className="absolute bottom-0 overflow-hidden"
@@ -55,14 +55,14 @@ export default function Landing() {
               y="0"
             >
               <polygon
-                className="text-gray-300 fill-current"
+                className="text-blue-100 fill-current"
                 points="2560 0 2560 100 0 100"
               ></polygon>
             </svg>
           </div>
         </div>
 
-        <section className="pb-20 bg-gray-300 -mt-24">
+        <section className="pb-20 bg-blue-100 -mt-24">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap">
               <div className="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center">
@@ -183,9 +183,34 @@ export default function Landing() {
 
             </div>
           </div>
+
         </section>
 
         <section className="pt-20 pb-48">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-wrap items-center mt-4 mb-10">
+              <div className="w-full md:w-5/12 px-4 mr-auto ml-auto">
+                <h3 className="text-3xl mb-2 font-semibold leading-normal">
+                  How it works
+                </h3>
+                <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-gray-700">
+                  Two factor authenticaion is imoprtant yet cumbersome. Cluncky Authentication methods like OTP and TOTP Based Pin Entry is cumborsome for a user to use.
+                </p>
+                <p className="text-lg font-light leading-relaxed mt-0 mb-4 text-gray-700">
+                  With Information Security becoming more and more important by the day, We wanted to push for a secure tommorow. Hence, Authsy!
+                </p>
+              </div>
+
+              <div className="w-full md:w-5/12 px-4 mr-auto ml-auto">
+
+                <img
+                  src={require("../assets/img/architecture.png")}
+                  alt="..."
+                  className="max-w-full mx-auto" />
+              </div>
+
+            </div>
+          </div>
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap justify-center text-center mb-24">
               <div className="w-full lg:w-6/12 px-4">

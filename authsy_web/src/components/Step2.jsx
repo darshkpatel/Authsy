@@ -1,18 +1,18 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import QRCode from '../assets/img/qrcode.png';
-import {generateKey} from "../utils/auth"
+import { generateKey } from "../utils/auth"
 
 export default function Step2() {
     useEffect(() => {
         const genKey = async () => {
-          // eslint-disable-next-line no-use-before-define
-          const resp = await generateKey()
-          console.log({resp})
+            // eslint-disable-next-line no-use-before-define
+            const resp = await generateKey()
+            console.log({ resp })
         };
         genKey();
-      }, []);
+    }, []);
     return (
-        <div className="container mx-auto px-4 h-50" style={{ marginTop: '12%'}}>
+        <div className="container mx-auto px-4 h-50">
             <div className="flex content-center items-center justify-center h-full">
                 <div className="w-full lg:w-4/12 px-4">
                     <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white border-0">

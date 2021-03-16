@@ -6,7 +6,7 @@ export default function Footer() {
       <footer className="relative bg-gray-900 pt-5 pb-8">
         <div
           className="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
-          style={{ height: "80px", transform: "translateZ(0)" }}
+          style={{ height: "80px", transform: "translateY(1px)" }}
         >
           <svg
             className="absolute bottom-0 overflow-hidden"
