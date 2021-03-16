@@ -119,7 +119,7 @@ export default function Landing() {
                   <i className="fas fa-user-friends text-xl"></i>
                 </div>
                 <h3 className="text-3xl mb-2 font-semibold leading-normal">
-                  The Idea behing Authsy
+                  The Idea behind Authsy
                 </h3>
                 <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-gray-700">
                   Two factor authenticaion is imoprtant yet cumbersome. Cluncky Authentication methods like OTP and TOTP Based Pin Entry is cumborsome for a user to use.
