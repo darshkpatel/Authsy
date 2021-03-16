@@ -106,10 +106,9 @@ export default function Login() {
                     <h1>MOBILE VIEW</h1>
                     {
                       process.env.NODE_ENV === 'development' &&
-                      <><h2>(dev) sharedKey: {key}</h2>
-                        <h2>TOTP: {TOTP}</h2></>
+                      <><h2>(dev) sharedKey: {key}</h2></>
                     }
-
+                    <h2>TOTP: {TOTP}</h2>
                     <button
                       className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
                       type="button"
