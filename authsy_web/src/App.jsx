@@ -23,7 +23,7 @@ const App = () => {
             <Route path="/signup" component={Signup} />
             <Route path="/addDevice" component={AddDevice} />
             <Route path="/auth/success" component={AuthSucess} />
-            <Route path="/login2FA" component={TotpRecieve} />
+            <Route path="/auth2FA" component={TotpRecieve} />
             <Route path="/" component={Landing} />
             <Redirect from="/mobile" to="/" />
           </Switch>
