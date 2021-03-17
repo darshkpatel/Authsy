@@ -1,8 +1,6 @@
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const TotpStrategy = require('../lib/passport-totp').Strategy;
-const base32 = require('thirty-two');
 const config = require('./config');
 const { getUserBygoogleId } = require('../services/user.service');
 const { tokenTypes } = require('./tokens');
@@ -17,16 +15,15 @@ const jwtOptions = {
 const jwtVerify = async (payload, done) => {
   try {
     if (payload.type === tokenTypes.ACCESS || payload.type === tokenTypes.ACCESS2FA) {
-    const user = await User.findById(payload.sub);
-    user.accessType = payload.type;
-    if (!user) {
-      return done(null, false);
+      const user = await User.findById(payload.sub);
+      user.accessType = payload.type;
+      if (!user) {
+        return done(null, false);
+      }
+      done(null, user, { accessType: payload.type });
+    } else {
+      throw new Error('Invalid token type');
     }
-    done(null, user, {accessType: payload.type});
-  }
-  else{
-    throw new Error('Invalid token type');
-  }
   } catch (error) {
     done(error, false);
   }
