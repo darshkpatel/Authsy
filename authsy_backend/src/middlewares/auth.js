@@ -7,11 +7,12 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
   if (err || !user) {
     return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
   }
-  if(requiredRights === '2FA'){
-    if(info != tokenTypes.ACCESS2FA ){
+  if (requiredRights === '2FA') {
+    if (info !== tokenTypes.ACCESS2FA) {
       return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please Complete 2FA'));
     }
   }
+  req.user = user;
   resolve();
 };
 
@@ -23,4 +24,4 @@ const auth = (...requiredRights) => async (req, res, next) => {
     .catch((err) => next(err));
 };
 
-module.exports = {auth};
+module.exports = { auth };
