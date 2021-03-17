@@ -22,7 +22,7 @@ const jwtVerify = async (payload, done) => {
     if (!user) {
       return done(null, false);
     }
-    done(null, user);
+    done(null, user, {accessType: payload.type});
   }
   else{
     throw new Error('Invalid token type');
