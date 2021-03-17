@@ -3,7 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
 const base32 = require('thirty-two');
 var crypto = require('crypto');
-
+const { totp } = require('../lib/totp');
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user);
@@ -68,6 +68,22 @@ const totpSecretGenerate = catchAsync(async (req, res) => {
   }
 })
 
+const totpVerify = catchAsync(async (req, res) => {
+  if (!req.user.key) {
+    res.send({ message: 'Error! No Key Configured' })
+  }
+  else {
+    const result = totp.verify(req.body.totp, req.user.key)
+    if(result && result.delta == 0){
+      res.send({ message: 'Verified'})
+    }
+    else{
+      res.send({ message: 'Invalid'})
+    }
+  }
+
+})
+
 const totpSecretQR = catchAsync(async (req, res) => {
   var url = null;
   const user = await userService.getUserById(req.user._id)
@@ -82,6 +98,30 @@ const totpSecretQR = catchAsync(async (req, res) => {
   });
 })
 
+const setMobileConfigured = catchAsync(async (req, res) => {
+  const user = req.user
+  if (!req.user.key) {
+    res.send({ message: 'Error! No Key Configured' })
+  } else {
+    //ToDo: Check if deleting the key at this point is viable
+    const updated = await userService.updateUserMobileConfig(user._id, true)
+    res.send({ user: updated })
+  }
+})
+
+const getKey = catchAsync(async (req, res) => {
+  if (!req.user.key) {
+    res.send({ message: 'Error! No Key Configured' })
+  } else if (req.user.mobileConfigured) {
+    res.send({ message: 'Error! Key already Configured' })
+  }
+  else {
+    //ToDo: Check if deleting the key at this point is viable
+    const key = String(req.user.key)
+    res.send({ key })
+  }
+})
+
 module.exports = {
   register,
   login,
@@ -91,5 +131,8 @@ module.exports = {
   resetPassword,
   googleCallback,
   totpSecretGenerate,
-  totpSecretQR
+  totpSecretQR,
+  setMobileConfigured,
+  getKey,
+  totpVerify
 };

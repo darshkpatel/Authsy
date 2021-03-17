@@ -82,7 +82,21 @@ const updateUserById = async (userId, updateBody) => {
  * @returns {Promise<User>}
  */
 const updateUserKeyById = async (userId, key) => {
-  const user = await User.findOneAndUpdate({ _id: userId }, { key: key },
+  const user = await User.findOneAndUpdate({ _id: userId }, { key: key , keyGenerated: true},
+    options = { upsert: false, new: true });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return user;
+};
+
+/**
+ * Update mobile config
+ * @param {ObjectId} userId
+ * @returns {Promise<User>}
+ */
+const updateUserMobileConfig = async (userId, status) => {
+  const user = await User.findOneAndUpdate({ _id: userId }, { mobileConfigured: status },
     options = { upsert: false, new: true });
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
@@ -112,5 +126,6 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
-  updateUserKeyById
+  updateUserKeyById,
+  updateUserMobileConfig
 };

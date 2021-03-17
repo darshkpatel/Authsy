@@ -7,11 +7,12 @@ const Dashboard = lazy(() => import("./views/Dashboard"));
 const Signup = lazy(() => import("./views/Signup"));
 const MobileDashboard = lazy(() => import("./views/mobile/Dashboard"));
 const AuthSucess = lazy(() => import("./views/AuthSucess"));
-const MobileLogin = lazy(() => import("./views/mobile/Login"));
+const FlowError = lazy(() => import("./views/mobile/FlowError"));
 const AddDevice = lazy(() => import("./views/AddDevice"));
+const TotpRecieve = lazy(() => import("./views/TotpRecieve"));
 
 const App = () => {
-  const isDesktop = useMedia('(min-width: 900px)');
+  const isDesktop = useMedia('(min-width: 700px)');
   if (isDesktop) {
     return (
       <Router>
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/signup" component={Signup} />
             <Route path="/addDevice" component={AddDevice} />
             <Route path="/auth/success" component={AuthSucess} />
+            <Route path="/login2FA" component={TotpRecieve} />
             <Route path="/" component={Landing} />
             <Redirect from="/mobile" to="/" />
           </Switch>
@@ -35,8 +37,11 @@ const App = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
             <Route path="/mobile" component={MobileDashboard} />
-            <Route path="/mlogin" component={MobileLogin} />
+            <Route path="/flowError" component={FlowError} />
+            <Route path="/auth/success" component={AuthSucess} />
+            <Route path="/login" component={Login} />
             <Redirect from="/" to="/mobile" />
+            <Redirect from="/dash" to="/mobile" />
           </Switch>
         </Suspense>
       </Router>

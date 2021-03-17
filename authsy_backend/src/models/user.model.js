@@ -34,6 +34,18 @@ const userSchema = mongoose.Schema(
       trim: true,
       default: 'https://res.cloudinary.com/brij1999/image/upload/v1574787385/Connect_plus/user_purple.png',
     },
+    mobileConfigured: {
+      type: Boolean,
+      required: false,
+      private: false,
+      default: false
+    },
+    keyGenerated: {
+      type: Boolean,
+      required: false,
+      private: false,
+      default: false
+    },
     key: {
       type: String,
       required: false,
