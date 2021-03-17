@@ -1,5 +1,5 @@
 import React from "react";
-import { getCookie } from 'react-use-cookie';
+import { getCookie, setCookie } from 'react-use-cookie';
 import {Redirect } from "react-router-dom";
 import { useMedia } from 'react-use';
 
@@ -18,6 +18,7 @@ export default function Login() {
     localStorage.setItem('access_token', cookie.accessToken)
     localStorage.setItem('refresh_token', cookie.refreshToken)
     localStorage.setItem('signed_up', true)
+    setCookie('JWT', ''); // Clear Stored cookie as data stored in local storage
   }
   if(isDesktop)
   return(<>
