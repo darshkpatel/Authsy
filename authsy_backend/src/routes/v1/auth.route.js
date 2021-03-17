@@ -25,6 +25,8 @@ router.get('/key', auth(''), authController.getKey);
 router.post('/totp-setup', auth(''), authController.totpSecretGenerate);
 router.post('/totp-verify', auth(''), authController.totpVerify); // Only for Setup Flow
 router.post('/mobileConfigured', auth(''), authController.setMobileConfigured);
+router.post('/totp-token', auth(''), authController.totpTokenGen); 
+//Dev
 if (config.env == 'development') router.get('/totp-qr', auth(''), authController.totpSecretQR);
 
 module.exports = router;

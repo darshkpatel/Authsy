@@ -16,14 +16,17 @@ const jwtOptions = {
 
 const jwtVerify = async (payload, done) => {
   try {
-    if (payload.type !== tokenTypes.ACCESS) {
-      throw new Error('Invalid token type');
-    }
+    if (payload.type === tokenTypes.ACCESS || payload.type === tokenTypes.ACCESS2FA) {
     const user = await User.findById(payload.sub);
+    user.accessType = payload.type;
     if (!user) {
       return done(null, false);
     }
     done(null, user);
+  }
+  else{
+    throw new Error('Invalid token type');
+  }
   } catch (error) {
     done(error, false);
   }
@@ -55,18 +58,6 @@ passport.use(
     }
   )
 );
-
-
-passport.use(
-  new TotpStrategy((user, done) => {
-    var key = user.key;
-    if(!key){
-      return done(new Error('No Key Present'))
-    } else {
-      return done(null, base32.decode(key), 30); // Valid Key Period
-    }
-  })
-)
 
 module.exports = {
   jwtStrategy,

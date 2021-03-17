@@ -7,16 +7,12 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
   if (err || info || !user) {
     return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
   }
-  req.user = user;
-  // if (requiredRights.length) {
-  //   // const userRights = roleRights.get(user.role);
-  //   // const hasRequiredRights = requiredRights.every((requiredRight) => userRights.includes(requiredRight));
-  //   // if (!hasRequiredRights && req.params.userId !== user.id) {
-  //   if (req.params.userId !== user.id) {
-  //     return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
-  //   }
-  // }
-
+  console.log(req.token)
+  if(requiredRights === '2FA'){
+    if(req.user.key){
+      
+    }
+  }
   resolve();
 };
 

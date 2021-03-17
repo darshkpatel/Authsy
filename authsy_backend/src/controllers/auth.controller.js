@@ -84,6 +84,23 @@ const totpVerify = catchAsync(async (req, res) => {
 
 })
 
+const totpTokenGen = catchAsync(async (req, res) => {
+  if (!req.user.key) {
+    res.send({ message: 'Error! No Key Configured' })
+  }
+  else {
+    const result = totp.verify(req.body.totp, req.user.key)
+    if(result && result.delta == 0){
+      const tokens = await tokenService.generate2FATokens(req.user)
+      res.send({ message: 'Verified', tokens})
+    }
+    else{
+      res.send({ message: 'Invalid'})
+    }
+  }
+
+})
+
 const totpSecretQR = catchAsync(async (req, res) => {
   var url = null;
   const user = await userService.getUserById(req.user._id)
@@ -134,5 +151,6 @@ module.exports = {
   totpSecretQR,
   setMobileConfigured,
   getKey,
-  totpVerify
+  totpVerify,
+  totpTokenGen
 };
