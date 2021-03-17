@@ -42,6 +42,16 @@ export const isAuthenticated = async () => {
     }
     return status;
 }
+export const isAuthenticated2fa = async () => {
+    let status = false;
+    try{
+     status =  await (await api.get('/auth/2fa/verify')).data.valid ?? false;
+    }
+    catch{
+        status = false;
+    }
+    return status;
+}
 
 export const handleLogout = async () => {
     const isLoggedIn = await isAuthenticated();

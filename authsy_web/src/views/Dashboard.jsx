@@ -2,19 +2,18 @@ import React, { useEffect, useState } from "react";
 import { getUser } from "../utils/auth";
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
-
+import api from "../utils/api"
 export default function Login() {
   const [user, setUser] = useState();
+  const [protectedData, setProtectedData] = useState();
   useEffect(() => {
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
-      const _user = await getUser();
-      console.log(_user);
-      setUser(_user);
+      setUser(await getUser());
+      setProtectedData( await(await api.get('/auth/2fa/protected_route')).data )
     };
     fetchData();
   }, []);
-
   // ToDo: Add Loader while fetching user
   return (
     <>
@@ -48,6 +47,8 @@ export default function Login() {
                         {`Refresh Token: ${localStorage.getItem(
                           "refresh_token"
                         )}`}
+                        <br />
+                        {`ProtectedData: ${protectedData?.message}`}
                       </div>
                     </div>
                   </div>

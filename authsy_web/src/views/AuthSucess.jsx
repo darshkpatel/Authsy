@@ -7,7 +7,7 @@ export default function Login() {
     let cookie = null;
     const alreadySignedUp = localStorage.getItem('signed_up') || false;
     const isDesktop = useMedia('(min-width: 700px)');
-
+  
     try{
    cookie = JSON.parse(getCookie('JWT'));
     }
@@ -24,7 +24,7 @@ export default function Login() {
   return(<>
       {!cookie && <div>Error Authenticating</div>}
       {cookie && !alreadySignedUp && <div>Redirecting..<Redirect to={'/addDevice'}/></div>}
-      {cookie && alreadySignedUp && <div>Redirecting..<Redirect to={'/dash'}/></div>}
+      {cookie && alreadySignedUp && <div>Redirecting..<Redirect to={'/auth2FA'}/></div>}
       </>)
 
   else

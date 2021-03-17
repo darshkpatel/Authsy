@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar.js";
 import SoundGif from '../assets/img/source.gif'
 import { totpToken } from "../utils/auth"
 import { ToastContainer, toast } from 'react-toastify';
+import {Redirect } from "react-router-dom";
 
 export default function TotpRecieve() {
     const [otp, setotp] = useState();
@@ -25,7 +26,7 @@ export default function TotpRecieve() {
                     profile: recvObj.profilename,
                     onReceive: receiverOnReceive
                 });
-            }, 1000)
+            }, 2000)
 
         }
         else
@@ -34,7 +35,7 @@ export default function TotpRecieve() {
 
         // Cleanup
         return () => {
-            if (typeof window.Quiet != "undefined") {
+            if (typeof window.Quiet != "undefined" && reciever.current) {
                 reciever.current.destroy();
             }
         }
@@ -59,7 +60,8 @@ export default function TotpRecieve() {
                 localStorage.setItem('access_token', res.tokens.access.token)
                 localStorage.setItem('refresh_token', res.tokens.refresh.token)
                 // Move to next step after toast ends
-                // setTimeout(()=>{changeStep(4)},2000)
+                setTimeout(()=>{window.location.href = '/dash'},2000)
+                
             }
             else {
                 toast.error('Invalid TOTP')
@@ -67,6 +69,17 @@ export default function TotpRecieve() {
         })
         setotp(recvObj.target);
     }
+
+
+
+      const tokenParts = JSON.parse(atob(localStorage.getItem('access_token').split('.')[1]));
+      const now = Math.ceil(Date.now() / 1000);
+      if(tokenParts.type==='access2fa' && tokenParts.exp > now){
+        console.log('Access Token 2FA Verified');
+
+        return (<div>Redirecting..<Redirect to={'/dash'}/></div>)
+      }
+
     return (
         <>
             <Navbar transparent />

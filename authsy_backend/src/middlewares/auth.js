@@ -7,8 +7,9 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
   if (err || !user) {
     return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
   }
-  if (requiredRights === '2FA') {
-    if (info !== tokenTypes.ACCESS2FA) {
+  // console.log({ requiredRights, info });
+  if (requiredRights.includes('2FA')) {
+    if (info.accessType !== tokenTypes.ACCESS2FA) {
       return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please Complete 2FA'));
     }
   }
