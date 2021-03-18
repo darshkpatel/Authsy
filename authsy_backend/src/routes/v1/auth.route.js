@@ -15,17 +15,28 @@ router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
-router.get('/verify', auth(''), (req, res) => { res.send({ valid: true }); });
+router.get('/verify', auth(''), (req, res) => {
+  res.send({ valid: true });
+});
 // Google Login
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], }));
-router.get('/google/callback', passport.authenticate('google', { session: false, }), authController.googleCallback);
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google/callback', passport.authenticate('google', { session: false }), authController.googleCallback);
 
 // 2FA
 router.get('/key', auth(''), authController.getKey);
 router.post('/totp-setup', auth(''), authController.totpSecretGenerate);
 router.post('/totp-verify', auth(''), authController.totpVerify); // Only for Setup Flow
 router.post('/mobileConfigured', auth(''), authController.setMobileConfigured);
-if (config.env == 'development') router.get('/totp-qr', auth(''), authController.totpSecretQR);
+router.post('/totp-token', auth(''), authController.totpTokenGen);
+router.get('/2fa/verify', auth('2FA'), (req, res) => {
+  res.send({ valid: true });
+});
+router.get('/2fa/protected_route', auth('2FA'), (req, res) => {
+  res.send({ message: 'Secret Data !' });
+});
+
+// Dev
+if (config.env === 'development') router.get('/totp-qr', auth(''), authController.totpSecretQR);
 
 module.exports = router;
 

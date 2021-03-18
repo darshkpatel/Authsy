@@ -85,6 +85,32 @@ const generateAuthTokens = async (user) => {
 };
 
 /**
+ * Generate 2FA tokens
+ * @param {User} user
+ * @returns {Promise<Object>}
+ */
+const generate2FATokens = async (user) => {
+  const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
+  const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS2FA);
+
+  // Refresh Expires at the same time so need to get a new one 
+  const refreshTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes'); 
+  const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
+  await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+
+  return {
+    access: {
+      token: accessToken,
+      expires: accessTokenExpires.toDate(),
+    },
+    refresh: {
+      token: refreshToken,
+      expires: refreshTokenExpires.toDate(),
+    },
+  };
+};
+
+/**
  * Generate reset password token
  * @param {string} email
  * @returns {Promise<string>}
@@ -106,4 +132,5 @@ module.exports = {
   verifyToken,
   generateAuthTokens,
   generateResetPasswordToken,
+  generate2FATokens
 };

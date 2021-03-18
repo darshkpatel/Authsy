@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SoundGif from '../assets/img/source.gif'
-import { totpVerify } from "../utils/auth"
+import { totpToken } from "../utils/auth"
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function Step3({changeStep}) {
@@ -50,10 +50,12 @@ export default function Step3({changeStep}) {
         // recvObj.content = window.Quiet.mergeab(recvObj.content, recvPayload);
         recvObj.target = window.Quiet.ab2str(recvPayload);
         console.log('Recieved TOTP: ' + recvObj.target);
-        totpVerify(recvObj.target).then((res)=>{
-            console.log(res)
+        totpToken(recvObj.target).then((res)=>{
+            // console.log(res)
             if(res.message==='Verified'){
                 toast.success('Verified TOTP Successfully')
+                localStorage.setItem('access_token', res.tokens.access.token)
+                localStorage.setItem('refresh_token', res.tokens.refresh.token)
                 // Move to next step after toast ends
                 setTimeout(()=>{changeStep(4)},2000)
             }

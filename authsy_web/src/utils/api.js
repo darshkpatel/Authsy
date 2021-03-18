@@ -20,7 +20,10 @@ api.interceptors.response.use(
             if (window.location.pathname !== '/login') window.location.href = '/login';
             return Promise.reject(error);
         }
-
+        if (error.response.status === 401 && (originalRequest.url.includes('2fa'))) {
+            if (window.location.pathname !== '/auth2FA') window.location.href = '/auth2FA';
+            return Promise.reject(error);
+        }
         if (error.response.data.code === 401) {
             const refreshToken = localStorage.getItem('refresh_token');
 
@@ -49,7 +52,7 @@ api.interceptors.response.use(
                         });
                 } else {
                     console.log("Refresh token is expired", tokenParts.exp, now);
-                    window.location.href = '/login';
+                    if (window.location.pathname !== '/login') window.location.href = '/login';
                 }
             } else {
                 console.log("Refresh token not available.")
