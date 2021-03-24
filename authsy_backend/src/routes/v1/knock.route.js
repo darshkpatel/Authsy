@@ -11,6 +11,9 @@ router
   .post(auth('getUsers'), validate(knockValidation.addIP), knockController.createIP)
   .get(auth('getUsers'), validate(knockValidation.getIPs), knockController.getIPs);
 
-router.route('/:ipId').delete(auth('getUsers'), validate(knockValidation.deleteIP), knockController.deleteIP);
+router
+  .route('/ip/:ipId')
+  .delete(auth('getUsers'), validate(knockValidation.deleteIP), knockController.deleteIP)
+  .get(auth('getUsers'), validate(knockValidation.knockPort), knockController.portknock);
 
 module.exports = router;

@@ -21,8 +21,14 @@ const deleteIP = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const portknock = catchAsync(async (req, res) => {
+  const status = await knockService.knockport(req.body, req.params.ipId);
+  res.send(status);
+});
+
 module.exports = {
   createIP,
   getIPs,
   deleteIP,
+  portknock,
 };
