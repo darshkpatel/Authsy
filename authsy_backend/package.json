@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "child_process": "^1.0.2",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "cross-env": "^7.0.0",
@@ -38,9 +39,11 @@
     "passport-google-oauth": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "pm2": "^4.1.2",
+    "public-ip": "^4.0.3",
     "swagger-jsdoc": "4.2.0",
     "swagger-ui-express": "4.1.4",
     "thirty-two": "^1.0.2",
+    "util": "^0.12.3",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
     "xss-clean": "^0.1.1"
