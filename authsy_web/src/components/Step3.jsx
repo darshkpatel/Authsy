@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import SoundGif from '../assets/img/source.gif'
 import { totpToken } from "../utils/auth"
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function Step3({changeStep}) {
     const [otp, setotp] = useState();
-    let reciever = useRef();
     useEffect(() => {
         if (typeof window.Quiet != "undefined") {
             window.Quiet.init({
@@ -13,32 +12,24 @@ export default function Step3({changeStep}) {
                 memoryInitializerPrefix: "/",
                 libfecPrefix: "/"
             });
-
-            var receiverOnReceive = function (payload) {
-                onReceive(payload, recvObj);
-            };
-
-            setTimeout(() => {
-                reciever.current = window.Quiet.receiver({
-                    profile: recvObj.profilename,
-                    onReceive: receiverOnReceive
-                });
-            }, 1000)
-            
+          
         }
         else
             window.location.reload();
         
-
-        // Cleanup
-        return () => {
-            if (typeof window.Quiet != "undefined") {
-                reciever.current.destroy();
-            }
-        }
     // eslint-disable-next-line
     }, [])
 
+    var receiverOnReceive = function (payload) {
+        onReceive(payload, recvObj);
+    };  
+    function startListner(){
+        window.Quiet.receiver({
+            profile: recvObj.profilename,
+            onReceive: receiverOnReceive
+        });
+        toast('Started Listening for TOTP');
+    }
     var profilename = "audible";
     var recvObj = {
         profilename,
@@ -97,6 +88,17 @@ export default function Step3({changeStep}) {
                             </div>
                             <img src={SoundGif} alt=".." style={{ width: "100%" }} />
                             <div className="text-center mb-3">
+                            <button
+                      className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
+                      type="button"
+                      style={{ transition: "all .15s ease" }}
+                      onClick={() => {
+                        startListner();
+                      }}
+                    >
+
+                      Receive
+                    </button>
                             </div>
                         </div>
                     </div>
