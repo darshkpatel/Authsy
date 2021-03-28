@@ -16,6 +16,14 @@ export default function Login() {
   //   fetchData();
   // }, []);
   // ToDo: Add Loader while fetching user
+  console.log(window.location.pathname)
+  const addPort = () => {
+    console.log("add port");
+    // api.post(`/knock/`)
+  }
+  const DeletePort = () => {
+    console.log("delete");
+  }
   return (
     <>
       {/* {user && ( */}
@@ -69,50 +77,64 @@ export default function Login() {
                       /> */}
                     </div>
                   </div>
-                  <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                    <div className="py-6 px-3 mt-32 sm:mt-0">
-                      <button
-                        onClick={() => window.location = "/addServer"}
-                        className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
-                        type="button"
-                        style={{ transition: "all .15s ease" }}
-                      >
-                        Add Server
-                      </button>
-                    </div>
-                  </div>
-                  <div className="w-full lg:w-4/12 px-4 lg:order-1">
-                    <div className="flex justify-center py-4 lg:pt-4 pt-8">
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                          0
-                        </span>
-                        <span className="text-sm text-gray-500">Servers</span>
-                      </div>
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                          0
-                        </span>
-                        <span className="text-sm text-gray-500">Ports open</span>
-                      </div>
-                      
-                    </div>
-                  </div>
                 </div>
                 <div className="text-center mt-12">
                   <h3 className="text-4xl font-semibold leading-normal mb-2 text-gray-800 mb-2">
-                    Devam Trivedi
+                    Open new port on your server
                   </h3>
-                  <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
-                    Welcome to Authsy
+                  <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold">
+                    <div className="relative flex w-2/4 justify-center flex items-stretch mb-1 m-auto">
+                      <input type="text" placeholder="Open port" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2" />
+                      <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+                      </span>
+                      <input type="text" placeholder="Knock port" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10" />
+                      <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+                      </span>
+                    </div>                
                   </div>
-                  <div className="mb-2 text-gray-700 mt-10">
-                    
-                    Lorem ipsum dolor sit
+                  <div className="mb-2 text-gray-700 mt-3 mb-5">
+                    <button
+                      onClick={addPort}
+                      className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
+                      type="button"
+                      style={{ transition: "all .15s ease" }}
+                    >
+                      Knock port
+                      </button>
                   </div>
                   <div className="mb-2 text-gray-700">
-                    
-                    Lorem ipsum dolor sit
+                    <table className="table-fixed m-auto border-collapse border border-blue-800">
+                      <thead>
+                        <tr>
+                          <th className="w-1/2 border border-blue-800">Port</th>
+                          <th className="w-1/4 border border-blue-800">Delete</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>3000</td>
+                          <td>
+                            <button
+                              className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
+                              onClick={DeletePort}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>5000</td>
+                          <td>
+                            <button
+                              className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
+                              onClick={DeletePort}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
                 <div className="mt-10 py-10 border-t border-gray-300 text-center">
