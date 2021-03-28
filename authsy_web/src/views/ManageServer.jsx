@@ -4,25 +4,29 @@ import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 import api from "../utils/api"
 import Footer from '../components/Footer';
-export default function Login() {
+import {useLocation} from 'react-router-dom';
+export default function Login(props) {
+  const ipId = props.match.params.ipId;
   const [user, setUser] = useState();
   const [protectedData, setProtectedData] = useState();
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     // eslint-disable-next-line no-use-before-define
-  //     setUser(await getUser());
-  //     setProtectedData(await (await api.get('/auth/2fa/protected_route')).data)
-  //   };
-  //   fetchData();
-  // }, []);
+  const [knockPort, setKnockPort] = useState();
+  const [port, setPort] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      // eslint-disable-next-line no-use-before-define
+      setUser(await getUser());
+      setProtectedData(await (await api.get('/auth/2fa/protected_route')).data)
+    };
+    fetchData();
+  }, []);
   // ToDo: Add Loader while fetching user
   console.log(window.location.pathname)
-  const addPort = () => {
-    console.log("add port");
-    // api.post(`/knock/`)
-  }
-  const DeletePort = () => {
-    console.log("delete");
+  const addPort = async () => {
+    const res = await api.post(`/knock/ip/${ipId}`, {
+      knockPort: knockPort,
+      port: port
+    });
+    console.log(res);
   }
   return (
     <>
@@ -84,10 +88,10 @@ export default function Login() {
                   </h3>
                   <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold">
                     <div className="relative flex w-2/4 justify-center flex items-stretch mb-1 m-auto">
-                      <input type="text" placeholder="Open port" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2" />
+                      <input type="text" onChange={(e)=>setPort(e.target.value)} placeholder="Open port" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2" />
                       <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
                       </span>
-                      <input type="text" placeholder="Knock port" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10" />
+                      <input type="text" onChange={(e)=>setKnockPort(e.target.value)} placeholder="Knock port" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10" />
                       <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
                       </span>
                     </div>                
@@ -103,7 +107,7 @@ export default function Login() {
                       </button>
                   </div>
                   <div className="mb-2 text-gray-700">
-                    <table className="table-fixed m-auto border-collapse border border-blue-800">
+                    {/* <table className="table-fixed m-auto border-collapse border border-blue-800">
                       <thead>
                         <tr>
                           <th className="w-1/2 border border-blue-800">Port</th>
@@ -134,7 +138,7 @@ export default function Login() {
                           </td>
                         </tr>
                       </tbody>
-                    </table>
+                    </table> */}
                   </div>
                 </div>
                 <div className="mt-10 py-10 border-t border-gray-300 text-center">

@@ -3,18 +3,21 @@ import { getJWTUser, getUser } from "../utils/auth";
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 import api from "../utils/api"
+import {useParams, useLocation, useHistory, useRouteMatch} from 'react-router-dom';
 import Footer from '../components/Footer';
 export default function Login() {
+  const router = useHistory();
   const [user, setUser] = useState();
   const [protectedData, setProtectedData] = useState();
   const [ip, setIP] = useState("");
   const [ipList, setIPList] = useState([]);
+  const [port, setPort] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
-      // setUser(await getUser());
-      // setProtectedData(await (await api.get('/auth/2fa/protected_route')).data);
-      console.log(await api.get("/knock/"+getJWTUser()))
+      setUser(await getUser());
+      setProtectedData(await (await api.get('/auth/2fa/protected_route')).data);
+      setIPList(await (await api.get("/knock/" + getJWTUser())).data)
     };
 
     fetchData();
@@ -22,15 +25,26 @@ export default function Login() {
   // ToDo: Add Loader while fetching user
   const handleServerAdd = async () => {
     console.log(getJWTUser())
-    api.post("/knock/"+getJWTUser(), {
-      IPAddress: ip
+    const res = await api.post("/knock/" + getJWTUser(), {
+      IPAddress: ip,
+      port: port
     })
+    console.log(res);
+    if(res.statusText==="Created") {
+      console.log('ran')
+      setIPList(await (await api.get("/knock/" + getJWTUser())).data)
+    }
   }
-  const managePorts = (ip) => {
-    window.location.href = "/manageServer/"+ip;
+  const managePorts = (id) => {
+    router.push(`/manageServer/${id}`);
   }
-  const DeleteServer = () => {
-    console.log("delete");
+  const DeleteServer = async (id) => {
+    console.log(getJWTUser())
+    const res = await api.delete("/knock/ip/"+id)
+    console.log(res);
+    if(res.status === 204) {
+      setIPList(await (await api.get("/knock/" + getJWTUser())).data)
+    }
   }
 
   return (
@@ -92,10 +106,12 @@ export default function Login() {
                     Add Server
                   </h3>
                   <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold">
-                    <div className="relative flex w-2/4 justify-center flex-wrap items-stretch mb-1 m-auto">
-                      <input type="text" placeholder="IP address" onChange={(e)=>setIP(e.target.value)} className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10" />
+                    <div className="relative flex w-2/4 justify-center flex items-stretch mb-1 m-auto">
+                      <input type="text" onChange={(e) => setIP(e.target.value)} placeholder="IP Address" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2" />
                       <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
-                        <i className="fas fa-cloud"></i>
+                      </span>
+                      <input type="number" onChange={(e) => setPort(e.target.value)} placeholder="Open port" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10" />
+                      <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
                       </span>
                     </div>
                   </div>
@@ -110,54 +126,40 @@ export default function Login() {
                       </button>
                   </div>
                   <div className="mb-2 text-gray-700">
-                    <table className="table-fixed m-auto border-collapse border border-blue-800">
-                      <thead>
-                        <tr>
-                          <th className="w-1/2 border border-blue-800">IP</th>
-                          <th className="w-1/4 border border-blue-800">Manage</th>
-                          <th className="w-1/4 border border-blue-800">Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>2.2.2.2</td>
-                          <td>
-                            <button
-                              className="bg-blue-300 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
-                              onClick={() => managePorts("2.2.2.2")}
-                            >
-                              Manage
+                      <table className="table-fixed m-auto border-collapse border border-blue-800">
+                        <thead>
+                          <tr>
+                            <th className="w-1/2 border border-blue-800">IP</th>
+                            <th className="w-1/4 border border-blue-800">Port</th>
+                            <th className="w-1/4 border border-blue-800">Manage</th>
+                            <th className="w-1/4 border border-blue-800">Delete</th>
+                          </tr>
+                        </thead>
+                    {ipList ? ipList.map((item, index) =>
+                        <tbody key={index}>
+                          <tr>
+                            <td>{item.IPAddress}</td>
+                            <td>{item.port}</td>
+                            <td>
+                              <button
+                                className="bg-blue-300 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
+                                onClick={() => managePorts(item.id)}
+                              >
+                                Manage
                             </button>
-                          </td>
-                          <td>
-                            <button
-                              className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
-                              onClick={DeleteServer}
-                            >
-                              Delete
+                            </td>
+                            <td>
+                              <button
+                                className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
+                                onClick={() => DeleteServer(item.id)}
+                              >
+                                Delete
                             </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1.1.1.1</td>
-                          <td>
-                            <button
-                              className="bg-blue-300 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
-                              onClick={() => managePorts("1.1.1.1")}
-                            >
-                              Manage
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
-                              onClick={DeleteServer}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
+                            </td>
+                          </tr>
+                        </tbody>
+                    )
+                    : ''}
                     </table>
                   </div>
                 </div>
