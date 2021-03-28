@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom";
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 import {isAuthenticated} from "../utils/auth"
-import api from "../utils/api.js";
 
 export default function Login() {
   const [isLoggedIn, setLogin] = useState()
@@ -17,12 +16,6 @@ export default function Login() {
   console.log({isLoggedIn})
   if(isLoggedIn){
     return <Redirect to="/dash" />
-  }
-  const signIn = async () => {
-    const data = await api.post("/auth/login", {
-      email: "you@gmail.com",
-      password: "Passpass#123"
-    })
   }
   return (
     <>
@@ -118,7 +111,6 @@ export default function Login() {
 
                       <div className="text-center mt-6">
                         <button
-                          onClick={signIn}
                           className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
                           type="button"
                           style={{ transition: "all .15s ease" }}

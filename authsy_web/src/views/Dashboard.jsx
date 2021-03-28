@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getJWTUser, getUser } from "../utils/auth";
 import Navbar from "../components/Navbar.js";
-import FooterSmall from "../components/FooterSmall.js";
 import api from "../utils/api"
 import Footer from '../components/Footer';
 import { Link } from "react-router-dom";
@@ -18,11 +17,12 @@ export default function Login() {
     };
     fetchData();
   }, []);
+  console.log(protectedData)
   // ToDo: Add Loader while fetching user
   return (
     <>
-      {/* {user && ( */}
       <Navbar transparent />
+      {user && (
       <main className="profile-page">
         <section className="relative block" style={{ height: "500px" }}>
           <div
@@ -98,7 +98,7 @@ export default function Login() {
                 </div>
                 <div className="text-center mt-12">
                   <h3 className="text-4xl font-semibold leading-normal mb-2 text-gray-800 mb-2">
-                    Devam Trivedi
+                    {user.name}
                   </h3>
                   <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
                     Welcome to Authsy
@@ -126,6 +126,7 @@ export default function Login() {
           </div>
         </section>
       </main>
+      )}
       <Footer />
     </>
   );

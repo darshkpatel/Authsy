@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getJWTUser, getUser } from "../utils/auth";
 import Navbar from "../components/Navbar.js";
-import FooterSmall from "../components/FooterSmall.js";
 import api from "../utils/api"
-import {useParams, useLocation, useHistory, useRouteMatch} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 export default function Login() {
   const router = useHistory();
@@ -22,6 +21,7 @@ export default function Login() {
 
     fetchData();
   }, []);
+  console.log(protectedData)
   // ToDo: Add Loader while fetching user
   const handleServerAdd = async () => {
     console.log(getJWTUser())
@@ -49,8 +49,8 @@ export default function Login() {
 
   return (
     <>
-      {/* {user && ( */}
       <Navbar transparent />
+      {user && (
       <main className="profile-page">
         <section className="relative block" style={{ height: "500px" }}>
           <div
@@ -177,7 +177,8 @@ export default function Login() {
           </div>
         </section>
       </main>
-      <Footer />
+      )}
+    <Footer />
     </>
   );
 }

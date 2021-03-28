@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getUser } from "../utils/auth";
 import Navbar from "../components/Navbar.js";
-import FooterSmall from "../components/FooterSmall.js";
 import api from "../utils/api"
 import Footer from '../components/Footer';
-import {useLocation} from 'react-router-dom';
 export default function Login(props) {
   const ipId = props.match.params.ipId;
   const [user, setUser] = useState();
@@ -19,8 +17,9 @@ export default function Login(props) {
     };
     fetchData();
   }, []);
+
   // ToDo: Add Loader while fetching user
-  console.log(window.location.pathname)
+  console.log(protectedData)
   const addPort = async () => {
     const res = await api.post(`/knock/ip/${ipId}`, {
       knockPort: knockPort,
@@ -30,8 +29,8 @@ export default function Login(props) {
   }
   return (
     <>
-      {/* {user && ( */}
       <Navbar transparent />
+      {user && (
       <main className="profile-page">
         <section className="relative block" style={{ height: "500px" }}>
           <div
@@ -155,6 +154,7 @@ export default function Login(props) {
           </div>
         </section>
       </main>
+      )}
       <Footer />
     </>
   );
