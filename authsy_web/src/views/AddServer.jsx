@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUser } from "../utils/auth";
+import { getJWTUser, getUser } from "../utils/auth";
 import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 import api from "../utils/api"
@@ -7,18 +7,24 @@ import Footer from '../components/Footer';
 export default function Login() {
   const [user, setUser] = useState();
   const [protectedData, setProtectedData] = useState();
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     // eslint-disable-next-line no-use-before-define
-  //     setUser(await getUser());
-  //     setProtectedData(await (await api.get('/auth/2fa/protected_route')).data)
-  //   };
-  //   fetchData();
-  // }, []);
+  const [ip, setIP] = useState("");
+  const [ipList, setIPList] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      // eslint-disable-next-line no-use-before-define
+      // setUser(await getUser());
+      // setProtectedData(await (await api.get('/auth/2fa/protected_route')).data);
+      console.log(await api.get("/knock/"+getJWTUser()))
+    };
+
+    fetchData();
+  }, []);
   // ToDo: Add Loader while fetching user
-  const handleServerAdd = () => {
-    console.log("add server");
-    // api.post(`/knock/`)
+  const handleServerAdd = async () => {
+    console.log(getJWTUser())
+    api.post("/knock/"+getJWTUser(), {
+      IPAddress: ip
+    })
   }
   const managePorts = (ip) => {
     window.location.href = "/manageServer/"+ip;
@@ -87,7 +93,7 @@ export default function Login() {
                   </h3>
                   <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold">
                     <div className="relative flex w-2/4 justify-center flex-wrap items-stretch mb-1 m-auto">
-                      <input type="text" placeholder="IP address" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10" />
+                      <input type="text" placeholder="IP address" onChange={(e)=>setIP(e.target.value)} className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10" />
                       <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
                         <i className="fas fa-cloud"></i>
                       </span>
