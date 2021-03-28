@@ -4,7 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const { knockService } = require('../services');
 
 const createIP = catchAsync(async (req, res) => {
-  const user = await knockService.addIP(req.body.IPAddress, req.params.userId);
+  const user = await knockService.addIP(req.body.IPAddress, req.body.port, req.params.userId);
   res.status(httpStatus.CREATED).send(user);
 });
 

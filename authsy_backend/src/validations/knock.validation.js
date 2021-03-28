@@ -2,9 +2,12 @@ const Joi = require('joi');
 const { objectId } = require('./custom.validation');
 
 const addIP = {
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     userId: Joi.string().custom(objectId),
+  }),
+  body: Joi.object().keys({
     IPAddress: Joi.string().required(),
+    port: Joi.number().min(1).max(65535).required(),
   }),
 };
 

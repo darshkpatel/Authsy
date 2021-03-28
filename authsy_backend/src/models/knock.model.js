@@ -19,6 +19,11 @@ const knockSchema = mongoose.Schema(
         }
       },
     },
+    port: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,

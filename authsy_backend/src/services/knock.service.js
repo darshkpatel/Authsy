@@ -9,14 +9,15 @@ const ApiError = require('../utils/ApiError');
 /**
  * Add a IP
  * @param {string} IPAddress
+ * @param {number} port
  * @param {ObjectId} userId
  * @returns {Promise<Knock>}
  */
-const addIP = async (IPAddress, userId) => {
+const addIP = async (IPAddress, port, userId) => {
   if (await Knock.isIPAdded(IPAddress, userId)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'IP already added');
   }
-  const details = await Knock.create({ IPAddress, userId });
+  const details = await Knock.create({ IPAddress, port, userId });
   return details;
 };
 
