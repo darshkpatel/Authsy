@@ -29,7 +29,7 @@ export default function Landing() {
                     Next Gen Authentication
                     </h1>
                   <p className="mt-4 text-lg text-gray-300">
-                    Authsy is the next big thing. Fast, Convinent and Secure two factor authentication using sound and magic.
+                    Authsy is the next big thing. Fast, Convenient and Secure two factor authentication using sound and magic.
                   </p>
                   <Link to="/login">
                     <button className="w-25 transform text-white px-6 py-2 mt-10 text-3xl border-4 border-white">
@@ -219,7 +219,7 @@ export default function Landing() {
                 </h2>
               </div>
             </div>
-            <div className="flex flex-wrap">
+            {/* <div className="flex flex-wrap">
               <div className="w-full md:w-6/12 lg:w-4/12 lg:mb-0 mb-12 px-4">
                 <div className="px-6">
                   <img
@@ -274,7 +274,7 @@ export default function Landing() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </section>
 
