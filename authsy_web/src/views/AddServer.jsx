@@ -56,11 +56,11 @@ export default function Login() {
       {user && (
         <main className="profile-page">
           <section className="relative block" style={{ height: "500px" }}>
-            <div
-              className="absolute top-0 w-full h-full bg-center bg-cover"
+          <div
+              className="absolute top-0 w-full h-full bg-center bg-cover bg-gray-900"
               style={{
                 backgroundImage:
-                  "url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2710&q=80')"
+                "url(" + require("../assets/img/register_bg_2.png") + ")",
               }}
             >
               <span
@@ -88,7 +88,7 @@ export default function Login() {
               </svg>
             </div>
           </section>
-          <section className="relative py-16 bg-gray-300">
+          <section className="relative py-32 bg-gray-300">
             <div className="container mx-auto px-4">
               <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
                 <div className="px-6">
