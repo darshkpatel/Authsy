@@ -22,7 +22,7 @@ const deleteIP = catchAsync(async (req, res) => {
 });
 
 const portknock = catchAsync(async (req, res) => {
-  const status = await knockService.knockport(req.body, req.params.ipId);
+  const status = await knockService.knockport(req.body, req.params.ipId, req.ip);
   res.send(status);
 });
 

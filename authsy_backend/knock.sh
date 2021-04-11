@@ -1,5 +1,6 @@
 #!/bin/bash
 
+ufw allow from $3
 if [ -d "${HOME}/go/src/github.com/giuliocomi/knockandgo" ] 
 then
     cd ~/go/src/github.com/giuliocomi/knockandgo
