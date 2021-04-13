@@ -4,8 +4,6 @@ import Navbar from "../components/Navbar.js";
 import FooterSmall from "../components/FooterSmall.js";
 import Steps from '../components/Steps.js';
 
-import { Link } from "react-router-dom";
-
 export default function Signup() {
   return (
     <>
