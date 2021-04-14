@@ -40,8 +40,8 @@ knockSchema.plugin(paginate);
  * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
  * @returns {Promise<boolean>}
  */
-knockSchema.statics.isIPAdded = async function (IPAddress, excludeUserId) {
-  const userIP = await this.findOne({ IPAddress, _id: { $ne: excludeUserId } });
+knockSchema.statics.isIPAdded = async function (IPAddress, userId) {
+  const userIP = await this.findOne({ IPAddress, userId: { $ne: userId } });
   return !!userIP;
 };
 
