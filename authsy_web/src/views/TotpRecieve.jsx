@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar.js";
 import SoundGif from '../assets/img/source.gif'
 import { totpToken } from "../utils/auth"
 import { ToastContainer, toast } from 'react-toastify';
-import {Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 export default function TotpRecieve() {
     const [otp, setotp] = useState();
@@ -25,8 +25,8 @@ export default function TotpRecieve() {
 
     var receiverOnReceive = function (payload) {
         onReceive(payload, recvObj);
-    };  
-    function startListner(){
+    };
+    function startListner() {
         window.Quiet.receiver({
             profile: recvObj.profilename,
             onReceive: receiverOnReceive
@@ -44,16 +44,14 @@ export default function TotpRecieve() {
     function onReceive(recvPayload, recvObj) {
         // recvObj.content = window.Quiet.mergeab(recvObj.content, recvPayload);
         recvObj.target = window.Quiet.ab2str(recvPayload);
-        console.log('Recieved TOTP: ' + recvObj.target);
         totpToken(recvObj.target).then((res) => {
-            // console.log(res)
             if (res.message === 'Verified') {
                 toast.success('Verified TOTP Successfully')
                 localStorage.setItem('access_token', res.tokens.access.token)
                 localStorage.setItem('refresh_token', res.tokens.refresh.token)
                 // Move to next step after toast ends
-                setTimeout(()=>{window.location.href = '/dash'},2000)
-                
+                setTimeout(() => { window.location.href = '/dash' }, 2000)
+
             }
             else {
                 toast.error('Invalid TOTP')
@@ -64,13 +62,11 @@ export default function TotpRecieve() {
 
 
 
-      const tokenParts = JSON.parse(atob(localStorage.getItem('access_token').split('.')[1]));
-      const now = Math.ceil(Date.now() / 1000);
-      if(tokenParts.type==='access2fa' && tokenParts.exp > now){
-        console.log('Access Token 2FA Verified');
-
-        return (<div>Redirecting..<Redirect to={'/dash'}/></div>)
-      }
+    const tokenParts = JSON.parse(atob(localStorage.getItem('access_token').split('.')[1]));
+    const now = Math.ceil(Date.now() / 1000);
+    if (tokenParts.type === 'access2fa' && tokenParts.exp > now) {
+        return (<div>Redirecting..<Redirect to={'/dash'} /></div>)
+    }
 
     return (
         <>
@@ -116,16 +112,16 @@ export default function TotpRecieve() {
                                         </div>
                                         <img src={SoundGif} alt=".." style={{ width: "100%" }} />
                                         <div className="text-center mb-3">
-                                        <button
-                      className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
-                      type="button"
-                      style={{ transition: "all .15s ease" }}
-                      onClick={() => {
-                        startListner();
-                      }}
-                    >
+                                            <button
+                                                className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
+                                                type="button"
+                                                style={{ transition: "all .15s ease" }}
+                                                onClick={() => {
+                                                    startListner();
+                                                }}
+                                            >
 
-                      Receive
+                                                Receive
                     </button>
                                         </div>
                                     </div>

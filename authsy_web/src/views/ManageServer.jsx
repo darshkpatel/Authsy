@@ -15,7 +15,6 @@ export default function Login(props) {
   const [knockPort, setKnockPort] = useState();
   const port = location.state.port;
   const ip = location.state.ip;
-  console.log(ip)
   const [status, setStatus] = useState();
   const [fport, setFport] = useState();
   useEffect(() => {
@@ -31,7 +30,6 @@ export default function Login(props) {
   console.log(protectedData);
   const addPort = async () => {
     const public_ip = await publicIp.v4();
-    console.log(public_ip)
     toast('Knocking port');
     const res = await api.post(`/knock/ip/${ipId}`, {
       clientIP: public_ip,
@@ -40,7 +38,6 @@ export default function Login(props) {
     });
     setStatus(res.data.STATUS);
     if (status) setFport(res.data.FORWARDING_PORT);
-    console.log(res);
     if (res.data.STATUS === "false") {
       toast.error("Port knocking failed, please try again");
     }

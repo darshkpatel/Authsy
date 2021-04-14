@@ -36,7 +36,6 @@ export default function Login() {
     if (key) {
       let _otp = totp.gen(key);
       setTOTP(_otp);
-      console.log("OTP Refresh: " + _otp);
     }
     else {
       console.error("No KEY Stored, Cannot update OTP")
