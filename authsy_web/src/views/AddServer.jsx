@@ -3,6 +3,7 @@ import { getJWTUser, getUser } from "../utils/auth";
 import Navbar from "../components/Navbar.js";
 import api from "../utils/api";
 import { useHistory } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 import Footer from "../components/Footer";
 export default function Login() {
   const router = useHistory();
@@ -24,15 +25,24 @@ export default function Login() {
   console.log(protectedData);
   // ToDo: Add Loader while fetching user
   const handleServerAdd = async () => {
-    console.log(getJWTUser());
-    const res = await api.post("/knock/" + getJWTUser(), {
-      IPAddress: ip,
-      port: port
-    });
-    console.log(res);
-    if (res.statusText === "Created") {
-      console.log("ran");
-      setIPList(await (await api.get("/knock/" + getJWTUser())).data);
+    if (port === "" || ip === "") {
+      toast("Please select a valid IP and port.")
+    }
+    else {
+      try {
+        const res = await api.post("/knock/" + getJWTUser(), {
+          IPAddress: ip,
+          port: port
+        });
+        if (res.statusText === "Created") {
+          console.log("ran");
+          setIPList(await (await api.get("/knock/" + getJWTUser())).data);
+          toast("Added server");
+        }
+      }
+      catch (e) {
+        toast(e.response.data.message);
+      }
     }
   };
   const managePorts = server => {
@@ -55,12 +65,21 @@ export default function Login() {
       <Navbar transparent />
       {user && (
         <main className="profile-page">
+          <ToastContainer position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false} />
           <section className="relative block" style={{ height: "500px" }}>
-          <div
+            <div
               className="absolute top-0 w-full h-full bg-center bg-cover bg-gray-900"
               style={{
                 backgroundImage:
-                "url(" + require("../assets/img/register_bg_2.png") + ")",
+                  "url(" + require("../assets/img/register_bg_2.png") + ")",
               }}
             >
               <span
@@ -109,7 +128,8 @@ export default function Login() {
                       Add Server
                     </h3>
                     <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold">
-                      <div className="relative flex w-2/4 justify-center flex items-stretch mb-1 m-auto">
+                      <div className="relative flex w-2/4 justify-center items-stretch mb-1 m-auto">
+                        <span className="w-full m-auto">IP address</span>
                         <input
                           type="text"
                           onChange={e => setIP(e.target.value)}
@@ -117,11 +137,14 @@ export default function Login() {
                           className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2"
                         />
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3"></span>
+                      </div>
+                      <div className="relative flex w-2/4 justify-center items-stretch mb-1 m-auto">
+                        <span className="w-full m-auto">Knock server port</span>
                         <input
                           type="number"
                           onChange={e => setPort(e.target.value)}
-                          placeholder="Open port"
-                          className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10"
+                          placeholder="Knock server port"
+                          className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2"
                         />
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3"></span>
                       </div>
@@ -137,23 +160,24 @@ export default function Login() {
                       </button>
                     </div>
                     <div className="mb-2 text-gray-700">
-                      <table className="table-fixed m-auto border-collapse border border-blue-800">
-                        <thead>
-                          <tr>
-                            <th className="w-1/2 border border-blue-800">IP</th>
-                            <th className="w-1/4 border border-blue-800">
-                              Port
+                      {ipList.length > 0 ?
+                        <>
+                          <table className="table-fixed m-auto border-collapse border border-blue-800">
+                            <thead>
+                              <tr>
+                                <th className="w-1/2 border border-blue-800">IP</th>
+                                <th className="w-1/4 border border-blue-800">
+                                  Knock server port
                             </th>
-                            <th className="w-1/4 border border-blue-800">
-                              Manage
+                                <th className="w-1/4 border border-blue-800">
+                                  Manage
                             </th>
-                            <th className="w-1/4 border border-blue-800">
-                              Delete
+                                <th className="w-1/4 border border-blue-800">
+                                  Delete
                             </th>
-                          </tr>
-                        </thead>
-                        {ipList
-                          ? ipList.map((item, index) => (
+                              </tr>
+                            </thead>
+                            {ipList.map((item, index) => (
                               <tbody key={index}>
                                 <tr>
                                   <td>{item.IPAddress}</td>
@@ -176,9 +200,10 @@ export default function Login() {
                                   </td>
                                 </tr>
                               </tbody>
-                            ))
-                          : ""}
-                      </table>
+                            ))}
+                          </table>
+                        </>
+                        : ""}
                     </div>
                   </div>
                   <div className="mt-10 py-10 border-t border-gray-300 text-center">

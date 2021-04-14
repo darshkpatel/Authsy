@@ -27,6 +27,7 @@ const knockPort = {
   body: Joi.object().keys({
     knockPort: Joi.number().min(1).max(65535).required(),
     port: Joi.number().min(1).max(65535).required(),
+    clientIP: Joi.string().required(),
   }),
 };
 module.exports = {

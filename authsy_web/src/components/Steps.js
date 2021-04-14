@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default function Steps(props) {
-    console.log(props.step)
     return (
         <div className="w-full py-6" style={{backgroundColor: 'transparent', marginTop: '5%'}}>
         <div className="flex">

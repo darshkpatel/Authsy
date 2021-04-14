@@ -6,18 +6,16 @@ import Footer from '../components/Footer';
 import { Link } from "react-router-dom";
 export default function Login() {
   const [user, setUser] = useState();
-  const [protectedData, setProtectedData] = useState();
+  // const [protectedData, setProtectedData] = useState();
   const [serverCount, setCount] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
       setUser(await getUser());
-      setProtectedData(await (await api.get('/auth/2fa/protected_route')).data);
       setCount(await (await api.get("/knock/" + getJWTUser())).data.length);
     };
     fetchData();
   }, []);
-  console.log(protectedData)
   // ToDo: Add Loader while fetching user
   return (
     <>
@@ -104,12 +102,10 @@ export default function Login() {
                       Welcome to Authsy
                   </div>
                     <div className="mb-2 text-gray-700 mt-10">
+                      Step 1: Add you server using the IP address and select the open port<br />
+                      Step 2: To knock a port, click on manage server<br />
+                      Step 3: Enter the knock port and click go.
 
-                      Lorem ipsum dolor sit
-                  </div>
-                    <div className="mb-2 text-gray-700">
-
-                      Lorem ipsum dolor sit
                   </div>
                   </div>
                   <div className="mt-10 py-10 border-t border-gray-300 text-center">

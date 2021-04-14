@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
+import publicIp from 'public-ip';
 import { getUser } from "../utils/auth";
+import { ToastContainer, toast } from 'react-toastify';
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar.js";
 import api from "../utils/api";
 import Footer from "../components/Footer";
+
 export default function Login(props) {
   const location = useLocation();
   const ipId = props.match.params.ipId;
   const [user, setUser] = useState();
-  const [protectedData, setProtectedData] = useState();
+  // const [protectedData, setProtectedData] = useState();
   const [knockPort, setKnockPort] = useState();
   const port = location.state.port;
   const ip = location.state.ip;
@@ -18,33 +21,48 @@ export default function Login(props) {
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
       setUser(await getUser());
-      setProtectedData(await (await api.get("/auth/2fa/protected_route")).data);
     };
     fetchData();
   }, []);
 
   // ToDo: Add Loader while fetching user
-  console.log(protectedData);
   const addPort = async () => {
+    const public_ip = await publicIp.v4();
+    toast('Knocking port');
     const res = await api.post(`/knock/ip/${ipId}`, {
+      clientIP: public_ip,
       knockPort: knockPort,
       port: port
     });
     setStatus(res.data.STATUS);
     if (status) setFport(res.data.FORWARDING_PORT);
-    console.log(res);
+    if (res.data.STATUS === "false") {
+      toast.error("Port knocking failed, please try again");
+    }
+    else {
+      toast.success('Knocked port successfully')
+    }
   };
   return (
     <>
       <Navbar transparent />
       {user && (
-        <main className="profile-page" style={{minHeight: '92vh'}}>
+        <main className="profile-page" style={{ minHeight: '92vh' }}>
+          <ToastContainer position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false} />
           <section className="relative block" style={{ height: "500px" }}>
             <div
               className="absolute top-0 w-full h-full bg-center bg-cover bg-gray-900"
               style={{
                 backgroundImage:
-                "url(" + require("../assets/img/register_bg_2.png") + ")",
+                  "url(" + require("../assets/img/register_bg_2.png") + ")",
               }}
             >
               <span
@@ -84,11 +102,11 @@ export default function Login(props) {
                   </div>
                   <div className="text-center mt-12 p-4">
                     <h3 className="text-4xl font-semibold leading-normal mb-2 text-gray-800 mb-2">
-                      Open new port on {ip}
+                      Send knock packet to {ip}
                     </h3>
                     <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold">
                       <div className="relative flex w-2/4 justify-center flex items-stretch mb-1 m-auto">
-                        {/* <input type="text" onChange={(e)=>setPort(e.target.value)} placeholder="Open port" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2" /> */}
+                        <span className="w-full m-auto">Knock server port</span>
                         <input
                           type="text"
                           value={port}
@@ -96,12 +114,20 @@ export default function Login(props) {
                           className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2"
                         />
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3"></span>
-                        <input
-                          type="text"
-                          onChange={e => setKnockPort(e.target.value)}
-                          placeholder="Knock port"
-                          className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10"
-                        />
+                      </div>
+                      <div className="relative flex w-2/4 justify-center flex items-stretch mb-1 m-auto">
+                        <span className="w-full m-auto">Allow port</span>
+                        <select
+                          className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2"
+                          onChange={(e) => setKnockPort(e.target.value)}
+                        >
+                          <option hidden>Open port</option>
+                          <option>8000</option>
+                          <option>8080</option>
+                          <option>8888</option>
+                          <option>8123</option>
+                          <option>4444</option>
+                        </select>
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3"></span>
                       </div>
                     </div>
@@ -116,49 +142,19 @@ export default function Login(props) {
                       </button>
                     </div>
                     <p className="mb-4 text-lg leading-relaxed text-gray-800">
-                      Status: {status} <br />
-                      {status === "true" ? <>Forwarding Port: {fport}</> : <></>}
-                      {status === "false" ? (
-                        <>
-                          Check if service is running on service on {knockPort}
-                        </>
-                      ) : (
-                        <></>
-                      )}
+                      {status ? <>
+                        Status: {status} <br />
+                        {status === "true" ? <>Forwarding Port: {fport}</> : <></>}
+                        {status === "false" ? (
+                          <>
+                            Check if service is running on service on {knockPort}
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </> : ""}
                     </p>
                     <div className="mb-2 text-gray-700">
-                      {/* <table className="table-fixed m-auto border-collapse border border-blue-800">
-                      <thead>
-                        <tr>
-                          <th className="w-1/2 border border-blue-800">Port</th>
-                          <th className="w-1/4 border border-blue-800">Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>3000</td>
-                          <td>
-                            <button
-                              className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
-                              onClick={DeletePort}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>5000</td>
-                          <td>
-                            <button
-                              className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
-                              onClick={DeletePort}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table> */}
                     </div>
                   </div>
                   <div className="mt-10 py-10 border-t border-gray-300 text-center">
