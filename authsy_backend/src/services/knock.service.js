@@ -2,7 +2,6 @@ const httpStatus = require('http-status');
 const util = require('util');
 // eslint-disable-next-line security/detect-child-process
 const exec = util.promisify(require('child_process').exec);
-const publicIp = require('public-ip');
 const { Knock } = require('../models');
 const ApiError = require('../utils/ApiError');
 
@@ -57,7 +56,7 @@ const knockport = async (knockdetails, ipId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'IP address not found');
   }
   const details = {};
-  details.IP = await publicIp.v4();
+  details.IP = knockdetails.clientIP;
   const { stdout, stderr } = await exec(`./knock.sh ${serverIP.IPAddress} ${port} ${details.IP} ${knockPort}`);
   if (stderr) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Port Knocking Failed');
