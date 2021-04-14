@@ -11,7 +11,6 @@ export default function Login(props) {
   const location = useLocation();
   const ipId = props.match.params.ipId;
   const [user, setUser] = useState();
-  const [protectedData, setProtectedData] = useState();
   const [knockPort, setKnockPort] = useState();
   const port = location.state.port;
   const ip = location.state.ip;
@@ -30,9 +29,9 @@ export default function Login(props) {
     const public_ip = await publicIp.v4();
     toast('Knocking port');
     const res = await api.post(`/knock/ip/${ipId}`, {
-      clientIP: public_ip,
       knockPort: knockPort,
-      port: port
+      port: port,
+      clientIP: public_ip,
     });
     setStatus(res.data.STATUS);
     if (status) setFport(res.data.FORWARDING_PORT);
