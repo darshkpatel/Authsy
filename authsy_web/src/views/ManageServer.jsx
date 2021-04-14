@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import publicIp from 'public-ip';
 import { getUser } from "../utils/auth";
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar.js";
 import api from "../utils/api";
@@ -32,22 +32,36 @@ export default function Login(props) {
   const addPort = async () => {
     const public_ip = await publicIp.v4();
     console.log(public_ip)
+    toast('Knocking port');
     const res = await api.post(`/knock/ip/${ipId}`, {
       clientIP: public_ip,
       knockPort: knockPort,
       port: port
     });
-    toast('Knocking port');
     setStatus(res.data.STATUS);
     if (status) setFport(res.data.FORWARDING_PORT);
     console.log(res);
-    toast.success('Knocked port successfully')
+    if (res.data.STATUS === "false") {
+      toast.error("Port knocking failed, please try again");
+    }
+    else {
+      toast.success('Knocked port successfully')
+    }
   };
   return (
     <>
       <Navbar transparent />
       {user && (
         <main className="profile-page" style={{ minHeight: '92vh' }}>
+          <ToastContainer position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false} />
           <section className="relative block" style={{ height: "500px" }}>
             <div
               className="absolute top-0 w-full h-full bg-center bg-cover bg-gray-900"
@@ -93,11 +107,11 @@ export default function Login(props) {
                   </div>
                   <div className="text-center mt-12 p-4">
                     <h3 className="text-4xl font-semibold leading-normal mb-2 text-gray-800 mb-2">
-                      Open new port on {ip}
+                      Send knock packet to {ip}
                     </h3>
                     <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold">
                       <div className="relative flex w-2/4 justify-center flex items-stretch mb-1 m-auto">
-                        {/* <input type="text" onChange={(e)=>setPort(e.target.value)} placeholder="Open port" className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2" /> */}
+                        <span className="w-full m-auto">Knock server port</span>
                         <input
                           type="text"
                           value={port}
@@ -105,8 +119,11 @@ export default function Login(props) {
                           className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2"
                         />
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3"></span>
+                      </div>
+                      <div className="relative flex w-2/4 justify-center flex items-stretch mb-1 m-auto">
+                        <span className="w-full m-auto">Allow port</span>
                         <select
-                          className="rounded-t py-3 bg-white hover:shadow-md shadow text-base w-full"
+                          className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2"
                           onChange={(e) => setKnockPort(e.target.value)}
                         >
                           <option hidden>Open port</option>
@@ -129,15 +146,17 @@ export default function Login(props) {
                       </button>
                     </div>
                     <p className="mb-4 text-lg leading-relaxed text-gray-800">
-                      Status: {status} <br />
-                      {status === "true" ? <>Forwarding Port: {fport}</> : <></>}
-                      {status === "false" ? (
-                        <>
-                          Check if service is running on service on {knockPort}
-                        </>
-                      ) : (
-                        <></>
-                      )}
+                      {status ? <>
+                        Status: {status} <br />
+                        {status === "true" ? <>Forwarding Port: {fport}</> : <></>}
+                        {status === "false" ? (
+                          <>
+                            Check if service is running on service on {knockPort}
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </> : ""}
                     </p>
                     <div className="mb-2 text-gray-700">
                       {/* <table className="table-fixed m-auto border-collapse border border-blue-800">
