@@ -47,7 +47,7 @@ export default function Login() {
   console.log({ user })
   console.log({ isLoggedIn })
 
-  function handleLogout(){
+  function handleLogout() {
     localStorage.removeItem('sharedKey')
     api.post(`/auth/mobileClear`).then((response) => {
       if (response.status === 200) {
@@ -74,9 +74,9 @@ export default function Login() {
         setTOTP(totp.gen(response.data.key))
         setMobileConfigured()
       }
-      else{
+      else {
         toast.error('Error Getting Shared Key')
-        console.log({data: response.data})
+        console.log({ data: response.data })
         // return <Redirect to="/flowError" />
       }
     })

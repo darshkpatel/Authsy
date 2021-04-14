@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import publicIp from 'public-ip';
 import { getUser } from "../utils/auth";
+import { toast } from 'react-toastify';
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar.js";
 import api from "../utils/api";
 import Footer from "../components/Footer";
+
 export default function Login(props) {
   const location = useLocation();
   const ipId = props.match.params.ipId;
@@ -12,6 +15,7 @@ export default function Login(props) {
   const [knockPort, setKnockPort] = useState();
   const port = location.state.port;
   const ip = location.state.ip;
+  console.log(ip)
   const [status, setStatus] = useState();
   const [fport, setFport] = useState();
   useEffect(() => {
@@ -26,25 +30,30 @@ export default function Login(props) {
   // ToDo: Add Loader while fetching user
   console.log(protectedData);
   const addPort = async () => {
+    const public_ip = await publicIp.v4();
+    console.log(public_ip)
     const res = await api.post(`/knock/ip/${ipId}`, {
+      clientIP: public_ip,
       knockPort: knockPort,
       port: port
     });
+    toast('Knocking port');
     setStatus(res.data.STATUS);
     if (status) setFport(res.data.FORWARDING_PORT);
     console.log(res);
+    toast.success('Knocked port successfully')
   };
   return (
     <>
       <Navbar transparent />
       {user && (
-        <main className="profile-page" style={{minHeight: '92vh'}}>
+        <main className="profile-page" style={{ minHeight: '92vh' }}>
           <section className="relative block" style={{ height: "500px" }}>
             <div
               className="absolute top-0 w-full h-full bg-center bg-cover bg-gray-900"
               style={{
                 backgroundImage:
-                "url(" + require("../assets/img/register_bg_2.png") + ")",
+                  "url(" + require("../assets/img/register_bg_2.png") + ")",
               }}
             >
               <span
@@ -96,12 +105,16 @@ export default function Login(props) {
                           className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2"
                         />
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3"></span>
-                        <input
-                          type="text"
-                          onChange={e => setKnockPort(e.target.value)}
-                          placeholder="Knock port"
-                          className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10"
-                        />
+                        <select
+                          className="rounded-t py-3 bg-white hover:shadow-md shadow text-base w-full"
+                          onChange={(e) => setKnockPort(e.target.value)}
+                        >
+                          <option hidden>Open port</option>
+                          <option>8000</option>
+                          <option>8080</option>
+                          <option>8123</option>
+                          <option>4444</option>
+                        </select>
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3"></span>
                       </div>
                     </div>
