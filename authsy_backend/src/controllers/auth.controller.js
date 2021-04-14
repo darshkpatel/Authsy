@@ -116,6 +116,17 @@ const setMobileConfigured = catchAsync(async (req, res) => {
   }
 });
 
+const unsetMobile = catchAsync(async (req, res) => {
+  const { user } = req;
+  if (!req.user.key) {
+    res.send({ message: 'Error! No Key Configured' });
+  } else {
+    // ToDo: Check if deleting the key at this point is viable
+    const updated = await userService.updateUserMobileConfig(user._id, false);
+    res.send({ user: updated });
+  }
+});
+
 const getKey = catchAsync(async (req, res) => {
   if (!req.user.key) {
     res.send({ message: 'Error! No Key Configured' });
@@ -142,4 +153,5 @@ module.exports = {
   getKey,
   totpVerify,
   totpTokenGen,
+  unsetMobile,
 };
