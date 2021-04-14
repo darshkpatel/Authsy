@@ -66,6 +66,7 @@ const knockport = async (knockdetails, ipId) => {
   if (details.STATUS === 'true') {
     // eslint-disable-next-line prefer-destructuring
     details.FORWARDING_PORT = stdout.split('\n')[1].replace(/\s+/g, '').split(':')[1];
+    await exec(`ufw allow from ${details.IP} to any port ${details.FORWARDING_PORT}`);
   }
   return details;
 };
