@@ -12,12 +12,10 @@ export default function Login() {
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
       setUser(await getUser());
-      setProtectedData(await (await api.get('/auth/2fa/protected_route')).data);
       setCount(await (await api.get("/knock/" + getJWTUser())).data.length);
     };
     fetchData();
   }, []);
-  console.log(protectedData)
   // ToDo: Add Loader while fetching user
   return (
     <>

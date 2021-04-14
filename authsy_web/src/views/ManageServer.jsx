@@ -21,13 +21,11 @@ export default function Login(props) {
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
       setUser(await getUser());
-      setProtectedData(await (await api.get("/auth/2fa/protected_route")).data);
     };
     fetchData();
   }, []);
 
   // ToDo: Add Loader while fetching user
-  console.log(protectedData);
   const addPort = async () => {
     const public_ip = await publicIp.v4();
     toast('Knocking port');
@@ -126,6 +124,7 @@ export default function Login(props) {
                           <option hidden>Open port</option>
                           <option>8000</option>
                           <option>8080</option>
+                          <option>8888</option>
                           <option>8123</option>
                           <option>4444</option>
                         </select>
@@ -156,38 +155,6 @@ export default function Login(props) {
                       </> : ""}
                     </p>
                     <div className="mb-2 text-gray-700">
-                      {/* <table className="table-fixed m-auto border-collapse border border-blue-800">
-                      <thead>
-                        <tr>
-                          <th className="w-1/2 border border-blue-800">Port</th>
-                          <th className="w-1/4 border border-blue-800">Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>3000</td>
-                          <td>
-                            <button
-                              className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
-                              onClick={DeletePort}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>5000</td>
-                          <td>
-                            <button
-                              className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
-                              onClick={DeletePort}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table> */}
                     </div>
                   </div>
                   <div className="mt-10 py-10 border-t border-gray-300 text-center">
