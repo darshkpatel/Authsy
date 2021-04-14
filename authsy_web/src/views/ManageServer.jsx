@@ -11,7 +11,7 @@ export default function Login(props) {
   const location = useLocation();
   const ipId = props.match.params.ipId;
   const [user, setUser] = useState();
-  const [protectedData, setProtectedData] = useState();
+  // const [protectedData, setProtectedData] = useState();
   const [knockPort, setKnockPort] = useState();
   const port = location.state.port;
   const ip = location.state.ip;
