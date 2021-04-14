@@ -25,14 +25,19 @@ export default function Login() {
   // ToDo: Add Loader while fetching user
   const handleServerAdd = async () => {
     console.log(getJWTUser());
-    const res = await api.post("/knock/" + getJWTUser(), {
-      IPAddress: ip,
-      port: port
-    });
-    console.log(res);
-    if (res.statusText === "Created") {
-      console.log("ran");
-      setIPList(await (await api.get("/knock/" + getJWTUser())).data);
+    if (port === "" || ip === "") {
+      alert("Please select a valid port.")
+    }
+    else {
+      const res = await api.post("/knock/" + getJWTUser(), {
+        IPAddress: ip,
+        port: port
+      });
+      console.log(res);
+      if (res.statusText === "Created") {
+        console.log("ran");
+        setIPList(await (await api.get("/knock/" + getJWTUser())).data);
+      }
     }
   };
   const managePorts = server => {
@@ -56,11 +61,11 @@ export default function Login() {
       {user && (
         <main className="profile-page">
           <section className="relative block" style={{ height: "500px" }}>
-          <div
+            <div
               className="absolute top-0 w-full h-full bg-center bg-cover bg-gray-900"
               style={{
                 backgroundImage:
-                "url(" + require("../assets/img/register_bg_2.png") + ")",
+                  "url(" + require("../assets/img/register_bg_2.png") + ")",
               }}
             >
               <span
@@ -117,12 +122,16 @@ export default function Login() {
                           className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10 mr-2"
                         />
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3"></span>
-                        <input
-                          type="number"
-                          onChange={e => setPort(e.target.value)}
-                          placeholder="Open port"
-                          className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10"
-                        />
+                        <select
+                          className="rounded-t py-3 bg-white hover:shadow-md shadow text-base w-full"
+                          onChange={(e) => setPort(e.target.value)}
+                        >
+                          <option hidden>Open port</option>
+                          <option>8000</option>
+                          <option>8080</option>
+                          <option>8123</option>
+                          <option>4444</option>
+                        </select>
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3"></span>
                       </div>
                     </div>
@@ -154,29 +163,29 @@ export default function Login() {
                         </thead>
                         {ipList
                           ? ipList.map((item, index) => (
-                              <tbody key={index}>
-                                <tr>
-                                  <td>{item.IPAddress}</td>
-                                  <td>{item.port}</td>
-                                  <td>
-                                    <button
-                                      className="bg-blue-300 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
-                                      onClick={() => managePorts(item)}
-                                    >
-                                      Manage
+                            <tbody key={index}>
+                              <tr>
+                                <td>{item.IPAddress}</td>
+                                <td>{item.port}</td>
+                                <td>
+                                  <button
+                                    className="bg-blue-300 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
+                                    onClick={() => managePorts(item)}
+                                  >
+                                    Manage
                                     </button>
-                                  </td>
-                                  <td>
-                                    <button
-                                      className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
-                                      onClick={() => DeleteServer(item.id)}
-                                    >
-                                      Delete
+                                </td>
+                                <td>
+                                  <button
+                                    className="bg-red-400 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:m-1 mb-1"
+                                    onClick={() => DeleteServer(item.id)}
+                                  >
+                                    Delete
                                     </button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            ))
+                                </td>
+                              </tr>
+                            </tbody>
+                          ))
                           : ""}
                       </table>
                     </div>

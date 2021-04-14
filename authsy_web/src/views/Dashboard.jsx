@@ -104,12 +104,10 @@ export default function Login() {
                       Welcome to Authsy
                   </div>
                     <div className="mb-2 text-gray-700 mt-10">
+                      Step 1: Add you server using the IP address and select the open port<br />
+                      Step 2: To knock a port, click on manage server<br />
+                      Step 3: Enter the knock port and click go.
 
-                      Lorem ipsum dolor sit
-                  </div>
-                    <div className="mb-2 text-gray-700">
-
-                      Lorem ipsum dolor sit
                   </div>
                   </div>
                   <div className="mt-10 py-10 border-t border-gray-300 text-center">
