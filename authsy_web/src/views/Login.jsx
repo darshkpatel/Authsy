@@ -44,22 +44,20 @@ export default function Login() {
                     <hr className="border-gray-400 mt-2 mb-5" />
 
                     <div className="btn-wrapper text-center">
-                      <button
-                        className="bg-white active:bg-gray-100 text-gray-800 px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs"
-                        type="button"
-                        style={{ transition: "all .15s ease" }}
-                        onClick={(e) => {
-                          // e.preventDefault();
-                          window.location.href = process.env.REACT_APP_BASE_URL + `/auth/google`;
-                        }}
-                      >
-                        <img
-                          alt="..."
-                          className="w-5 mr-1"
-                          src={require("../assets/img/google.svg")}
-                        />
+                      <a href={process.env.REACT_APP_BASE_URL + `/auth/google`}>
+                        <button
+                          className="bg-white active:bg-gray-100 text-gray-800 px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs"
+                          type="button"
+                          style={{ transition: "all .15s ease" }}
+                        >
+                          <img
+                            alt="..."
+                            className="w-5 mr-1"
+                            src={require("../assets/img/google.svg")}
+                          />
                         Google
                       </button>
+                      </a>
                     </div>
                   </div>
                 </div>
