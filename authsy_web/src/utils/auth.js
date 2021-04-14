@@ -59,7 +59,7 @@ export const handleLogout = async () => {
         localStorage.removeItem('access_token');
         const refreshToken = localStorage.getItem('refresh_token');
         await api.post(`/auth/logout`, { refreshToken });
-        window.location.href = `${window.location.hostname}/login`;
+        window.location.href = `/login`;
     }
     return;
 }

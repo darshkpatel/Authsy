@@ -27,6 +27,7 @@ router.get('/key', auth(''), authController.getKey);
 router.post('/totp-setup', auth(''), authController.totpSecretGenerate);
 router.post('/totp-verify', auth(''), authController.totpVerify); // Only for Setup Flow
 router.post('/mobileConfigured', auth(''), authController.setMobileConfigured);
+router.post('/mobileClear', auth(''), authController.unsetMobile);
 router.post('/totp-token', auth(''), authController.totpTokenGen);
 router.get('/2fa/verify', auth('2FA'), (req, res) => {
   res.send({ valid: true });
