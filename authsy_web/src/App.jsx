@@ -28,7 +28,7 @@ const App = () => {
             <Route path="/auth2FA" component={TotpRecieve} />
             <Route path="/addServer" component={AddServer} />
             <Route path="/manageServer/:ipId" component={ManageServer} />
-            <Route path="/" component={Landing} />
+            <Route path="/" component={Landing} exact/>
             <Redirect from="/mobile" to="/" />
           </Switch>
         </Suspense>

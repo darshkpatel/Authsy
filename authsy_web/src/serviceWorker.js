@@ -20,6 +20,10 @@ const isLocalhost = Boolean(
     )
 );
 
+const isAPI = Boolean(
+  window.location.pathname.startsWith('/v1')
+);
+
 export function register(config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
@@ -33,10 +37,16 @@ export function register(config) {
       // serve assets; see https://github.com/facebook/create-react-app/issues/2374
       return;
     }
-
+    if(isAPI){ return; } // Disable Service Worker for APIs
+ 
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
-
+      if(isAPI){ 
+        console.info('unregistering service worker for API route')
+        unregister()
+        console.info('reloading')
+        window.location.reload()
+        return; } 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config);
