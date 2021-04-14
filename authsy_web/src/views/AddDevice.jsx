@@ -6,7 +6,7 @@ import Steps from '../components/Steps.js';
 
 import Step2 from '../components/Step2.jsx';
 import Step3 from '../components/Step3.jsx';
-import Step4 from '../components/Step4.js';
+import Step4 from '../components/Step4.jsx';
 
 export default function AddDevice() {
 	const [step, setStep] = useState(2);

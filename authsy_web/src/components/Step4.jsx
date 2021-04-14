@@ -1,5 +1,6 @@
 import React from 'react';
 import SuccessGif from '../assets/img/success.gif';
+import { Link } from "react-router-dom";
 
 export default function Step4() {
     return (
@@ -14,6 +15,18 @@ export default function Step4() {
                                 </h6>
                             </div>
                             <img src={SuccessGif} alt=".." style={{ width: "100%" }} />
+                            <div className="text-center mb-3">
+                                <Link to="/dashboard">
+                                    <button
+                                        className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
+                                        type="button"
+                                        style={{ transition: "all .15s ease" }}
+                                    >
+
+                                        Go to Dashboard
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
