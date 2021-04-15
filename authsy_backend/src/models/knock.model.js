@@ -11,7 +11,6 @@ const knockSchema = mongoose.Schema(
     IPAddress: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       validate(value) {
         if (!value.match(/\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b/)) {
@@ -41,8 +40,8 @@ knockSchema.plugin(paginate);
  * @returns {Promise<boolean>}
  */
 knockSchema.statics.isIPAdded = async function (IPAddress, userId) {
-  const userIP = await this.findOne({ IPAddress, userId });
-  return userIP.length === 0 ? false:true;
+  const userIP = await this.find({ IPAddress, userId });
+  return userIP.length;
 };
 
 /**
