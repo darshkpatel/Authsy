@@ -41,8 +41,8 @@ knockSchema.plugin(paginate);
  * @returns {Promise<boolean>}
  */
 knockSchema.statics.isIPAdded = async function (IPAddress, userId) {
-  const userIP = await this.findOne({ IPAddress, userId: { $ne: userId } });
-  return !!userIP;
+  const userIP = await this.findOne({ IPAddress, userId });
+  return userIP.length === 0 ? false:true;
 };
 
 /**
