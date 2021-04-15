@@ -15,7 +15,6 @@ export default function Login(props) {
   const port = location.state.port;
   const ip = location.state.ip;
   const [status, setStatus] = useState();
-  const [fport, setFport] = useState();
   useEffect(() => {
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
@@ -28,18 +27,22 @@ export default function Login(props) {
   const addPort = async () => {
     const public_ip = await publicIp.v4();
     toast('Knocking port');
-    const res = await api.post(`/knock/ip/${ipId}`, {
-      knockPort: knockPort,
-      port: port,
-      clientIP: public_ip,
-    });
-    setStatus(res.data.STATUS);
-    if (status) setFport(res.data.FORWARDING_PORT);
-    if (res.data.STATUS === "false") {
-      toast.error("Port knocking failed, please try again");
+    try {
+      const res = await api.post(`/knock/ip/${ipId}`, {
+        knockPort: knockPort,
+        port: port,
+        clientIP: public_ip,
+      });
+      setStatus(res.data.STATUS);
+      if (res.data.STATUS === "false") {
+        toast.error("Port knocking failed, please try again");
+      }
+      else {
+        toast.success('Knocked port successfully')
+      }
     }
-    else {
-      toast.success('Knocked port successfully')
+    catch {
+      toast.error("Can't reach the server right now")
     }
   };
   return (
@@ -143,7 +146,7 @@ export default function Login(props) {
                     <p className="mb-4 text-lg leading-relaxed text-gray-800">
                       {status ? <>
                         Status: {status} <br />
-                        {status === "true" ? <>Forwarding Port: {fport}</> : <></>}
+                        {status === "true" ? <>Forwarding Port: {knockPort}</> : <></>}
                         {status === "false" ? (
                           <>
                             Check if service is running on service on {knockPort}

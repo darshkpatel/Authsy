@@ -8,7 +8,6 @@ import Footer from "../components/Footer";
 export default function Login() {
   const router = useHistory();
   const [user, setUser] = useState();
-  const [protectedData, setProtectedData] = useState();
   const [ip, setIP] = useState("");
   const [ipList, setIPList] = useState([]);
   const [port, setPort] = useState("");
@@ -16,17 +15,15 @@ export default function Login() {
     const fetchData = async () => {
       // eslint-disable-next-line no-use-before-define
       setUser(await getUser());
-      setProtectedData(await (await api.get("/auth/2fa/protected_route")).data);
       setIPList(await (await api.get("/knock/" + getJWTUser())).data);
     };
 
     fetchData();
   }, []);
-  console.log(protectedData);
   // ToDo: Add Loader while fetching user
   const handleServerAdd = async () => {
     if (port === "" || ip === "") {
-      toast("Please select a valid IP and port.")
+      toast.error("Please select a valid IP and port.")
     }
     else {
       try {
@@ -34,10 +31,10 @@ export default function Login() {
           IPAddress: ip,
           port: port
         });
-        if (res.statusText === "Created") {
+        if (res.data.IPAddress) {
           console.log("ran");
           setIPList(await (await api.get("/knock/" + getJWTUser())).data);
-          toast("Added server");
+          toast.success("Added server");
         }
       }
       catch (e) {
