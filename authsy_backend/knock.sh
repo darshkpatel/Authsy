@@ -9,4 +9,4 @@ then
 else
     echo "Error: Directory does not exists."
 fi
-go run main.go -m c -a $1 -s $2 -i $3 -t 3 -k $4
+go run main.go -m c -a $1 -s $2 -i $3 -t 3000 -k $4
