@@ -28,18 +28,23 @@ export default function Login(props) {
   const addPort = async () => {
     const public_ip = await publicIp.v4();
     toast('Knocking port');
-    const res = await api.post(`/knock/ip/${ipId}`, {
-      knockPort: knockPort,
-      port: port,
-      clientIP: public_ip,
-    });
-    setStatus(res.data.STATUS);
-    if (status) setFport(res.data.FORWARDING_PORT);
-    if (res.data.STATUS === "false") {
-      toast.error("Port knocking failed, please try again");
+    try {
+      const res = await api.post(`/knock/ip/${ipId}`, {
+        knockPort: knockPort,
+        port: port,
+        clientIP: public_ip,
+      });
+      setStatus(res.data.STATUS);
+      setFport(res.data.FORWARDING_PORT);
+      if (res.data.STATUS === "false") {
+        toast.error("Port knocking failed, please try again");
+      }
+      else {
+        toast.success('Knocked port successfully')
+      }
     }
-    else {
-      toast.success('Knocked port successfully')
+    catch {
+      toast.error("Can't reach the server right now")
     }
   };
   return (
